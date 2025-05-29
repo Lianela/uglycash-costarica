@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UglyCR - La Revolución de Pagos en Costa Rica</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-pink: #ff00ff;
+            --neon-blue: #00f7ff;
+            --neon-green: #00ff88;
+            --dark-bg: #121212;
+            --dark-card: #1a1a1a;
+        }
+        
+        body {
+            font-family: 'Exo 2', sans-serif;
+            background: linear-gradient(135deg, #121212 0%, #1a1a1a 50%, #2c2c2c 100%);
+            color: #ffffff;
+            min-height: 100vh;
+        }
+        
+        .neon-text {
+            text-shadow: 
+                0 0 5px var(--neon-pink),
+                0 0 10px var(--neon-pink),
+                0 0 20px var(--neon-blue);
+        }
+        
+        .neon-text-green {
+            text-shadow: 
+                0 0 5px var(--neon-green),
+                0 0 10px var(--neon-green),
+                0 0 20px var(--neon-green);
+        }
+        
+        .neon-text-blue {
+            text-shadow: 
+                0 0 5px var(--neon-blue),
+                0 0 10px var(--neon-blue),
+                0 0 20px var(--neon-blue);
+        }
+        
+        .neon-border {
+            box-shadow: 
+                0 0 5px var(--neon-blue),
+                0 0 10px var(--neon-pink);
+        }
+        
+        .neon-border-green {
+            box-shadow: 
+                0 0 5px var(--neon-green),
+                0 0 10px var(--neon-green);
+        }
+        
+        .place-card {
+            background: rgba(26, 26, 26, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .place-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 
+                0 0 10px var(--neon-blue),
+                0 0 20px var(--neon-pink),
+                0 0 30px var(--neon-green);
+        }
+        
+        .glow-icon {
+            filter: drop-shadow(0 0 3px var(--neon-blue));
+            transition: all 0.3s ease;
+        }
+        
+        .place-card:hover .glow-icon {
+            filter: drop-shadow(0 0 8px var(--neon-pink));
+        }
+        
+        .flag-animation {
+            animation: pulse 2s infinite alternate;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); filter: brightness(1); }
+            100% { transform: scale(1.05); filter: brightness(1.2); }
+        }
+        
+        .logo-animation {
+            animation: float 4s infinite alternate;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
+            100% { transform: translateY(0) rotate(-2deg); }
+        }
+        
+        .benefit-card {
+            background: linear-gradient(135deg, rgba(255, 0, 255, 0.1) 0%, rgba(0, 247, 255, 0.1) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .benefit-card:hover {
+            background: linear-gradient(135deg, rgba(255, 0, 255, 0.2) 0%, rgba(0, 247, 255, 0.2) 100%);
+            transform: translateY(-5px);
+        }
+        
+        .sound-btn {
+            transition: all 0.3s ease;
+        }
+        
+        .sound-btn:hover {
+            transform: scale(1.1);
+            text-shadow: 
+                0 0 5px var(--neon-green),
+                0 0 10px var(--neon-green),
+                0 0 20px var(--neon-green);
+        }
+        
+        /* Road animation */
+        .road {
+            background: repeating-linear-gradient(90deg, 
+                rgba(255, 255, 255, 0.05) 0px, 
+                rgba(255, 255, 255, 0.05) 10px, 
+                transparent 10px, 
+                transparent 20px);
+            animation: roadMove 20s linear infinite;
+        }
+        
+        @keyframes roadMove {
+            0% { background-position: 0 0; }
+            100% { background-position: -1000px 0; }
+        }
+        
+        /* Optimizations for PDF export */
+        @media print {
+            .container {
+                width: 100%;
+                max-width: none;
+            }
+            
+            .grid {
+                display: block;
+            }
+            
+            .place-card {
+                page-break-inside: avoid;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <!-- Sound Button -->
+    <div class="fixed top-4 right-4 z-50">
+        <button id="soundToggle" class="sound-btn bg-transparent border border-green-400 rounded-full p-3 flex items-center justify-center">
+            <i id="soundIcon" class="fas fa-volume-up text-2xl text-green-400"></i>
+        </button>
+    </div>
+
+    <!-- Header Section -->
+    <header class="relative overflow-hidden pt-10 pb-5">
+        <div class="absolute inset-0 z-0">
+            <div class="road absolute bottom-0 h-10 w-full"></div>
+        </div>
+        
+        <div class="container mx-auto px-4 relative z-10">
+            <div class="flex flex-col md:flex-row items-center justify-between mb-6">
+                <div class="flex items-center">
+                    <img src="https://i.postimg.cc/DzbpSLJr/512x512bb.jpg" alt="UglyCash Logo" class="h-16 w-16 md:h-20 md:w-20 rounded-full neon-border logo-animation">
+                    <div class="ml-4">
+                        <h1 class="text-4xl md:text-5xl font-extrabold neon-text">UglyCR</h1>
+                        <p class="text-xl neon-text-green">La Revolución de Pagos en Costa Rica</p>
+                    </div>
+                </div>
+                <img src="https://i.postimg.cc/28n4ybd0/Flag-of-Costa-Rica-state-svg.png" alt="Costa Rica Flag" class="h-14 md:h-16 mt-4 md:mt-0 neon-border flag-animation">
+            </div>
+            
+            <div class="text-center mt-8 mb-12">
+                <h2 class="text-3xl font-bold neon-text-blue mb-4">¡Paga Fácil, Rápido y Seguro!</h2>
+                <p class="text-xl max-w-4xl mx-auto">UglyCash está transformando la forma de pagar en Costa Rica con su tecnología innovadora, seguridad avanzada y aceptación en los lugares más populares del país.</p>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Benefits Section -->
+    <section class="py-10 bg-opacity-30 bg-black">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center neon-text mb-8">¿Por Qué Usar UglyCash?</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="benefit-card rounded-lg p-6 text-center">
+                    <i class="fas fa-bolt text-4xl mb-4 text-yellow-300 glow-icon"></i>
+                    <h3 class="text-xl font-bold mb-2 neon-text-green">Ultra Rápido</h3>
+                    <p>Pagos instantáneos sin esperas. Más rápido que tarjetas tradicionales y efectivo.</p>
+                </div>
+                
+                <div class="benefit-card rounded-lg p-6 text-center">
+                    <i class="fas fa-shield-alt text-4xl mb-4 text-blue-300 glow-icon"></i>
+                    <h3 class="text-xl font-bold mb-2 neon-text-blue">100% Seguro</h3>
+                    <p>Tecnología blockchain avanzada que garantiza transacciones seguras y transparentes.</p>
+                </div>
+                
+                <div class="benefit-card rounded-lg p-6 text-center">
+                    <i class="fas fa-globe text-4xl mb-4 text-green-300 glow-icon"></i>
+                    <h3 class="text-xl font-bold mb-2 neon-text">Amplia Aceptación</h3>
+                    <p>Utilizable en los comercios más populares de Costa Rica y plataformas internacionales.</p>
+                </div>
+            </div>
+            
+            <div class="text-center mt-12">
+                <div class="inline-block p-4 bg-opacity-20 bg-purple-900 rounded-lg neon-border">
+                    <p class="text-lg">UglyCash es la única solución de pago en Costa Rica que combina velocidad, seguridad y conveniencia en un solo sistema.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Featured Images -->
+    <section class="py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-wrap justify-center gap-8">
+                <img src="https://i.postimg.cc/qqp1DFmw/Gh-MN9-Wn-XEAAb-Fa-R.png" alt="UglyCash Feature" class="h-40 rounded-lg neon-border">
+                <img src="https://i.postimg.cc/gJFS8j8f/q-E5-Qext-Nm-VZT16-TRLVFMszeo.png" alt="UglyCash Usage" class="h-40 rounded-lg neon-border-green">
+            </div>
+        </div>
+    </section>
+    
+    <!-- Places Section -->
+    <section class="py-12">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center neon-text mb-2">¡Usa UglyCash en Estos Lugares!</h2>
+            <p class="text-center text-xl mb-10">Todos estos establecimientos aceptan UglyCash como método de pago</p>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Place Card: Unimart -->
+                <div class="place-card rounded-lg p-5 flex flex-col items-center">
+                    <i class="fas fa-shopping-basket text-4xl mb-4 text-blue-300 glow-icon"></i>
+                    <h3 class="text-xl font-bold mb-2">Unimart</h3>
+                    <p class="text-gray-300">Clase: Ninguna</p>
+                    <p class="text-sm mt-3 text-center">Compra tus víveres y artículos esenciales pagando con UglyCash en todas las sucursales.</p>
+                </div>
+                
+                <!-- Place Card: HBO Max -->
+                <div class="place-card rounded-lg p-5 flex flex-col items-center">
+                    <i class="fas fa-tv text-4xl mb-4 text-purple-300 glow-icon"></i>
+                    <h3 class="text-xl font-bold mb-2">HBO Max</h3>
+                    <p class="text-gray-300">Clase: 3</p>
+                    <p class="text-sm mt-3 text-center">Disfruta del mejor entretenimiento pagando tu suscripción mensual con UglyCash.</p>
+                </div>
+                
+                <!-- Place Card: Didi -->
+                <div class="place-card rounded-lg p-5 flex flex-col items-center">
+                    <i class="fas fa-car-side text-4xl mb-4 text-yellow-300 glow-icon"></i>
+                    <h3 class="text-xl font-bold mb-2">Didi</h3>
+                    <p class="text-gray-300">Clase: 4</p>
+                    <p class="text-sm mt-3 text-center">Tus viajes por la ciudad son más convenientes pagando directamente con UglyCash.</p>
+                </div>
+                
+                <!-- Place Card: Apple -->
+                <div class="place-card rounded-lg p-5 flex flex-col items-center">
+                    <i class="fab fa-apple text-4xl mb-4 text-gray-300 glow-icon"></i>
+                    <h3 class="text-xl font-bold mb-2">Apple</h3>
+                    <p class="text-gray-300">Clase: 4</p>
+                    <p class="text-sm mt-3 text-center">Paga por apps, música y servicios de Apple usando UglyCash de forma segura.</p>
+                </div>
+                
+                <!-- Place Card: Uber -->
+                <div class="place-card rounded-lg p-5 flex flex-col items-center">
+                    <i class="fab fa-uber text-4xl mb-4 text-white glow-icon"></i>
+                    <h3 class="text-xl font-bold mb-2">Uber</h3>
+                    <p class="text-gray-300">Clase: 5</p>
+                    <p class="text-sm mt-3 text-center">Viajes seguros y convenientes pagando con UglyCash en toda Costa Rica.</p>
+                </div>
+                
+                <!-- Place Card: Kolbi -->
+                <div class="place-card rounded-lg p-5 flex flex-col items-center">
+                    <i class="fas fa-mobile-alt text-4xl mb-4 text-green-300 glow-icon"></i>
+                    <h3 class="text-xl font-bold mb-2">Kolbi</h3>
+                    <p class="text-gray-300">Clase: 5</p>
+                    <p class="text-sm mt-3 text-center">Paga tu factura telefónica y recarga tu saldo fácilmente con UglyCash.</p>
+                </div>
+                
+                <!-- Place Card: Seguros Lafise -->
+                <div class="place-card rounded-lg p-5 flex flex-col items-center">
+                    <i class="fas fa-shield-alt text-4xl mb-4 text-red-300 glow-icon"></i>
+                    <h3 class="text-xl font-bold mb-2">Seguros Lafise</h3>
+                    <p class="text-gray-300">Clase: 6</p>
+                    <p class="text-sm mt-3 text-center">Paga tus pólizas de seguros de manera segura y rápida con UglyCash.</p>
+                </div>
+                
+                <!-- Place Card: Claro -->
+                <div class="place-card rounded-lg p-5 flex flex-col items-center">
+                    <i class="fas fa-broadcast-tower text-4xl mb-4 text-red-400 glow-icon"></i>
+                    <h3 class="text-xl font-bold mb-2">Claro</h3>
+                    <p class="text-gray-300">Clase: 6</p>
+                    <p class="text-sm mt-3 text-center">Servicios de telefonía e internet pagados fácilmente con UglyCash.</p>
+                </div>
+                
+                <!-- Place Card: Shein -->
+                <div class="place-card rounded-lg p-5 flex flex-col items-center">
+                    <i class="fas fa-tshirt text-4xl mb-4 text-pink-300 glow-icon"></i>
+                    <h3 class="text-xl font-bold mb-2">Shein</h3>
+                    <p class="text-gray-300">Clase: 7</p>
+                    <p class="text-sm mt-3 text-center">Compra moda internacional y págala con UglyCash sin complicaciones.</p>
+                </div>
+                
+                <!-- Place Card: Gumroad -->
+                <div class="place-card rounded-lg p-5 flex flex-col items-center">
+                    <i class="fas fa-store text-4xl mb-4 text-blue-400 glow-icon"></i>
+                    <h3 class="text-xl font-bold mb-2">Gumroad</h3>
+                    <p class="text-gray-300">Clase: 8</p>
+                    <p class="text-sm mt-3 text-center">Adquiere productos digitales de creadores independientes usando UglyCash.</p>
+                </div>
+                
+                <!-- Place Card: Hotmart -->
+                <div class="place-card rounded-lg p-5 flex flex-col items-center">
+                    <i class="fas fa-graduation-cap text-4xl mb-4 text-orange-300 glow-icon"></i>
+                    <h3 class="text-xl font-bold mb-2">Hotmart</h3>
+                    <p class="text-gray-300">Clase: 9</p>
+                    <p class="text-sm mt-3 text-center">Cursos y contenido educativo pagados con la seguridad de UglyCash.</p>
+                </div>
+                
+                <!-- Place Card: Datáfonos BAC -->
+                <div class="place-card rounded-lg p-5 flex flex-col items-center">
+                    <i class="fas fa-credit-card text-4xl mb-4 text-blue-300 glow-icon"></i>
+                    <h3 class="text-xl font-bold mb-2">Datáfonos BAC Credomatic</h3>
+                    <p class="text-gray-300">Clase: 10</p>
+                    <p class="text-sm mt-3 text-center">Pagos seguros mediante datáfonos BAC usando tu UglyCash.</p>
+                </div>
+                
+                <!-- Place Card: Pedidos Ya -->
+                <div class="place-card rounded-lg p-5 flex flex-col items-center">
+                    <i class="fas fa-motorcycle text-4xl mb-4 text-red-500 glow-icon"></i>
+                    <h3 class="text-xl font-bold mb-2">Pedidos Ya</h3>
+                    <p class="text-gray-300">Clase: 10</p>
+                    <p class="text-sm mt-3 text-center">Comida a domicilio pagada con UglyCash de forma sencilla y rápida.</p>
+                </div>
+                
+                <!-- Place Card: PayPal -->
+                <div class="place-card rounded-lg p-5 flex flex-col items-center">
+                    <i class="fab fa-paypal text-4xl mb-4 text-blue-400 glow-icon"></i>
+                    <h3 class="text-xl font-bold mb-2">PayPal</h3>
+                    <p class="text-gray-300">Clase: 11</p>
+                    <p class="text-sm mt-3 text-center">Integración perfecta entre PayPal y UglyCash para pagos internacionales.</p>
+                </div>
+                
+                <!-- Place Card: Microsoft -->
+                <div class="place-card rounded-lg p-5 flex flex-col items-center">
+                    <i class="fab fa-microsoft text-4xl mb-4 text-blue-300 glow-icon"></i>
+                    <h3 class="text-xl font-bold mb-2">Microsoft</h3>
+                    <p class="text-gray-300">Clase: 11</p>
+                    <p class="text-sm mt-3 text-center">Adquiere software, juegos y servicios de Microsoft con UglyCash.</p>
+                </div>
+                
+                <!-- Place Card: McDonald's -->
+                <div class="place-card rounded-lg p-5 flex flex-col items-center">
+                    <i class="fas fa-hamburger text-4xl mb-4 text-yellow-400 glow-icon"></i>
+                    <h3 class="text-xl font-bold mb-2">McDonald's</h3>
+                    <p class="text-gray-300">Clase: Ninguna</p>
+                    <p class="text-sm mt-3 text-center">Disfruta de comida rápida en todas las sucursales pagando con UglyCash.</p>
+                </div>
+                
+                <!-- Place Card: Burger King -->
+                <div class="place-card rounded-lg p-5 flex flex-col items-center">
+                    <i class="fas fa-crown text-4xl mb-4 text-yellow-500 glow-icon"></i>
+                    <h3 class="text-xl font-bold mb-2">Burger King</h3>
+                    <p class="text-gray-300">Clase: Ninguna</p>
+                    <p class="text-sm mt-3 text-center">Paga tus hamburguesas favoritas con UglyCash en todos los locales del país.</p>
+                </div>
+                
+                <!-- Place Card: TEMU -->
+                <div class="place-card rounded-lg p-5 flex flex-col items-center">
+                    <i class="fas fa-shopping-bag text-4xl mb-4 text-orange-400 glow-icon"></i>
+                    <h3 class="text-xl font-bold mb-2">TEMU</h3>
+                    <p class="text-gray-300">Clase: Ninguna</p>
+                    <p class="text-sm mt-3 text-center">Compras internacionales con precios increíbles pagando con UglyCash.</p>
+                </div>
+                
+                <!-- Place Card: Amazon -->
+                <div class="place-card rounded-lg p-5 flex flex-col items-center">
+                    <i class="fab fa-amazon text-4xl mb-4 text-yellow-400 glow-icon"></i>
+                    <h3 class="text-xl font-bold mb-2">Amazon</h3>
+                    <p class="text-gray-300">Clase: Ninguna</p>
+                    <p class="text-sm mt-3 text-center">Todo lo que necesitas con envío a Costa Rica pagando con UglyCash.</p>
+                </div>
+                
+                <!-- Place Card: El Rey -->
+                <div class="place-card rounded-lg p-5 flex flex-col items-center">
+                    <i class="fas fa-crown text-4xl mb-4 text-yellow-300 glow-icon"></i>
+                    <h3 class="text-xl font-bold mb-2">El Rey</h3>
+                    <p class="text-gray-300">Clase: Ninguna</p>
+                    <p class="text-sm mt-3 text-center">Supermercados El Rey aceptan UglyCash en todas sus cajas registradoras.</p>
+                </div>
+                
+                <!-- Place Card: Volea Pádel -->
+                <div class="place-card rounded-lg p-5 flex flex-col items-center">
+                    <i class="fas fa-table-tennis text-4xl mb-4 text-green-400 glow-icon"></i>
+                    <h3 class="text-xl font-bold mb-2">Volea Pádel</h3>
+                    <p class="text-gray-300">Clase: Ninguna</p>
+                    <p class="text-sm mt-3 text-center">Reserva canchas y paga clases de pádel con UglyCash sin comisiones.</p>
+                </div>
+                
+                <!-- Place Card: Liberty -->
+                <div class="place-card rounded-lg p-5 flex flex-col items-center">
+                    <i class="fas fa-wifi text-4xl mb-4 text-blue-400 glow-icon"></i>
+                    <h3 class="text-xl font-bold mb-2">Liberty</h3>
+                    <p class="text-gray-300">Clase: Ninguna</p>
+                    <p class="text-sm mt-3 text-center">Servicios de internet y cable TV pagados fácilmente con UglyCash.</p>
+                </div>
+                
+                <!-- Place Card: Vindi -->
+                <div class="place-card rounded-lg p-5 flex flex-col items-center">
+                    <i class="fas fa-store-alt text-4xl mb-4 text-green-400 glow-icon"></i>
+                    <h3 class="text-xl font-bold mb-2">Vindi</h3>
+                    <p class="text-gray-300">Clase: Ninguna</p>
+                    <p class="text-sm mt-3 text-center">Compras rápidas en tiendas de conveniencia usando UglyCash.</p>
+                </div>
+                
+                <!-- Place Card: Pagadito -->
+                <div class="place-card rounded-lg p-5 flex flex-col items-center">
+                    <i class="fas fa-hand-holding-usd text-4xl mb-4 text-green-500 glow-icon"></i>
+                    <h3 class="text-xl font-bold mb-2">Pagadito</h3>
+                    <p class="text-gray-300">Clase: Ninguna</p>
+                    <p class="text-sm mt-3 text-center">Integración perfecta con la plataforma regional de pagos Pagadito.</p>
+                </div>
+                
+                <!-- Place Card: Peaje Ruta 27 -->
+                <div class="place-card rounded-lg p-5 flex flex-col items-center">
+                    <i class="fas fa-road text-4xl mb-4 text-gray-300 glow-icon"></i>
+                    <h3 class="text-xl font-bold mb-2">Peaje Ruta 27</h3>
+                    <p class="text-gray-300">Clase: Ninguna</p>
+                    <p class="text-sm mt-3 text-center">Paga tus peajes sin detenerte usando UglyCash a través de QuickPass.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Testimonials -->
+    <section class="py-12 bg-opacity-30 bg-black">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center neon-text mb-10">Lo Que Dicen Nuestros Usuarios</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-opacity-20 bg-gray-800 p-6 rounded-lg">
+                    <div class="flex items-start mb-4">
+                        <i class="fas fa-quote-left text-3xl text-pink-400 mr-4"></i>
+                        <p>"UglyCash ha cambiado la manera en que pago mis compras diarias. Es increíblemente rápido y nunca tengo que preocuparme por llevar efectivo."</p>
+                    </div>
+                    <p class="text-right text-pink-300 font-bold">- María L., San José</p>
+                </div>
+                
+                <div class="bg-opacity-20 bg-gray-800 p-6 rounded-lg">
+                    <div class="flex items-start mb-4">
+                        <i class="fas fa-quote-left text-3xl text-blue-400 mr-4"></i>
+                        <p>"Como dueño de negocio, UglyCash me ha facilitado recibir pagos sin las altas comisiones de las tarjetas tradicionales. Mis clientes lo adoran."</p>
+                    </div>
+                    <p class="text-right text-blue-300 font-bold">- Carlos R., Alajuela</p>
+                </div>
+                
+                <div class="bg-opacity-20 bg-gray-800 p-6 rounded-lg">
+                    <div class="flex items-start mb-4">
+                        <i class="fas fa-quote-left text-3xl text-green-400 mr-4"></i>
+                        <p>"La seguridad que ofrece UglyCash es incomparable. Después de un intento de fraude con mi tarjeta, cambié completamente a UglyCash y no podría estar más satisfecho."</p>
+                    </div>
+                    <p class="text-right text-green-300 font-bold">- Roberto M., Heredia</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Final CTA -->
+    <section class="py-16">
+        <div class="container mx-auto px-4 text-center">
+            <h2 class="text-4xl font-bold neon-text mb-6">¡Únete a la Revolución UglyCash!</h2>
+            <p class="text-xl max-w-3xl mx-auto mb-8">Más de 10,000 costarricenses ya disfrutan de la libertad, seguridad y conveniencia de UglyCash. Sé parte del futuro de los pagos en Costa Rica.</p>
+            
+            <div class="inline-block bg-gradient-to-r from-purple-600 to-blue-600 p-1 rounded-lg neon-border">
+                <div class="bg-gray-900 px-8 py-4 rounded-lg">
+                    <p class="text-2xl font-bold neon-text-blue">UglyCash: El Futuro de los Pagos en Costa Rica</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="bg-gray-900 py-10">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center mb-6 md:mb-0">
+                    <img src="https://i.postimg.cc/DzbpSLJr/512x512bb.jpg" alt="UglyCash Logo" class="h-10 w-10 rounded-full neon-border">
+                    <span class="ml-3 text-xl font-bold neon-text">UglyCash</span>
+                </div>
+                
+                <p class="text-center md:text-right text-gray-300">© 2023 UglyCash. Transformando pagos en Costa Rica.</p>
+            </div>
+            
+            <div class="mt-8 text-center">
+                <p class="text-gray-400">UglyCash es una solución de pago digital innovadora con tecnología blockchain diseñada para Costa Rica.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Audio Element (Hidden) -->
+    <audio id="hoverSound" preload="auto">
+        <source src="data:audio/mp3;base64,SUQzBAAAAAAAI1RTU0UAAAAPAAADTGF2ZjU4Ljc2LjEwMAAAAAAAAAAAAAAA/+NAwAAAAAAAAAAAAFhpbmcAAAAPAAAAAwAABPYAVlZWVlZWVlZWVlZWVlZWVlZWVlZxcXFxcXFxcXFxcXFxcXFxcXFxcXGMjIyMjIyMjIyMjIyMjIyMjIyMjIz///////////////8AAAAATGF2YzU4LjEzAAAAAAAAAAAAAAAAJAAAAAAAAAAABPThcgj5AAAAAAAAAAAAAAAAAAAAAP/jYMQAEvgiwl9DAAAAO1ABrCxjKCgYHAYHBgUCgQDgMfHwMBPpAA3gHz/JOvzv5Q/9UP9JMKBQGAoVAgCAYCQgUpBg5A8PD4oAZG91ZY9JMJBQKBQqFhQHhQHAYCAQDgMf+MMYXf/iw/8TP/+hAQCA4XD4qHz//gCA4XD4qAgIBgoD/+NCxB8aWHbBn4wwAH8PigPn5gYDBnmBwEBgIAQMOB3/TJPpxICAYCgcLigPigOAkTBwQBgQAH/5Y/86aoaY9AoFQoKBYYLCBeNCxVA4EAQEf//xU//+In//QKhYUD558QCgUFBQvDheGCoQFAQLxQOAgBAYDgMf+KDQgGAgBAwHA4CAoVBIXigcyQoGA4CAICBcUFwECQgRAAEAAOAQGDQsIB4MChICQcDgMDgwGAYFAIDBAMAQGBwYJCQaIBoWCAfJCQbIBAYAgeAYIBACAYMAYtCQQghIKb/40LEMRRQlnn/gTAAAAAMBAMCgDAYMBYDA4MB4lOmTLDDMTAwGAEBAYBgHAQGBABAYHAphYXEQ0IhYyJTLiUAoDAwDgMDgIAYAmSJBwLAQDAYekyROmWLGoND9MqTKkyxYJRKJTJEgYDgEBqhYcFxEMC4qJTKkybOSTJxMPCAAhIfkmVOlUMCYcAQMNj9JMqSJgYMiYaFRQVmVJlCZYsaGkqJJmTrGZxOM34+LCITDYqJDACZVCqGAgUCQMDaVIkSBR5P//+NAxF8aU18CX894AJCZf//91///kJCZf//tVVVVVVIkJl//+qqqqqqqqpEiRIkSJEiRVVVVVVUSJEiRIkSJEiRVVVIkVVIkSKqqpEiRIkSJEiRVVVVVVUiRIkSJEiRIkMQU1FMy45OS41VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVQQoZxgVBQIAwTEhIAAAAdJJPngDK//jQsRPGkB2qZ+PMACEhI02qJE/kmaRE584kRLyJF5EiT0SJPRIk9EiT0SJPRIk9EiT0SJEiRJ0SJOiRJ0iRJ6JEnpEiiJFESKIkURIoiRREiiJFESKIkURIoiRREiiJFESKIkURIoiRREiiNDg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4ODg4I=" type="audio/mp3">
+    </audio>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sound toggle functionality
+            const soundToggle = document.getElementById('soundToggle');
+            const soundIcon = document.getElementById('soundIcon');
+            const hoverSound = document.getElementById('hoverSound');
+            let soundEnabled = true;
+            
+            soundToggle.addEventListener('click', function() {
+                soundEnabled = !soundEnabled;
+                if (soundEnabled) {
+                    soundIcon.classList.remove('fa-volume-mute');
+                    soundIcon.classList.add('fa-volume-up');
+                } else {
+                    soundIcon.classList.remove('fa-volume-up');
+                    soundIcon.classList.add('fa-volume-mute');
+                }
+            });
+            
+            // Add sound effect to cards
+            const placeCards = document.querySelectorAll('.place-card');
+            placeCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    if (soundEnabled) {
+                        // Clone the audio element to allow overlapping sounds
+                        const audioClone = hoverSound.cloneNode(true);
+                        audioClone.volume = 0.2; // Lower volume
+                        audioClone.play();
+                        
+                        // Clean up after playing
+                        audioClone.addEventListener('ended', function() {
+                            audioClone.remove();
+                        });
+                    }
+                });
+            });
+            
+            // Alternative sound using Web Audio API for browsers that don't support the audio element
+            function playBeep() {
+                if (!soundEnabled) return;
+                
+                try {
+                    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                    const oscillator = ctx.createOscillator();
+                    const gainNode = ctx.createGain();
+                    
+                    oscillator.type = 'sine';
+                    oscillator.frequency.setValueAtTime(440, ctx.currentTime);
+                    
+                    gainNode.gain.setValueAtTime(0.1, ctx.currentTime); // Lower volume
+                    gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.2);
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(ctx.destination);
+                    
+                    oscillator.start();
+                    oscillator.stop(ctx.currentTime + 0.2);
+                } catch (e) {
+                    console.log('Web Audio API not supported');
+                }
+            }
+            
+            // Fallback for audio element
+            hoverSound.addEventListener('error', function() {
+                placeCards.forEach(card => {
+                    card.removeEventListener('mouseenter');
+                    card.addEventListener('mouseenter', playBeep);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
