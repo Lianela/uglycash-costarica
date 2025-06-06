@@ -1,0 +1,706 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UglyCR - La Revolución de Pagos en Costa Rica</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-black: #1a1a1a;
+            --accent-dark-gray: #2a2a2a;
+            --accent-purple: #6b46c1;
+            --accent-blue: #2b6cb0;
+            --accent-yellow: #d69e2e;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--primary-black);
+            background-image: url('https://i.postimg.cc/DzbpSLJr/512x512bb.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            background-blend-mode: overlay;
+            color: #e0e0e0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .font-display {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(107, 70, 193, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(43, 108, 176, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(214, 158, 46, 0.15) 0%, transparent 50%);
+            animation: float 15s ease-in-out infinite;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(20px, -20px) rotate(0.5deg); }
+            66% { transform: translate(-15px, 15px) rotate(-0.5deg); }
+        }
+
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .glass-strong {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue), var(--accent-yellow));
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradient-shift 4s ease-in-out infinite;
+        }
+
+        @keyframes gradient-shift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .modern-btn {
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            border: none;
+            color: #ffffff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            font-size: 1.1rem;
+        }
+
+        .modern-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(107, 70, 193, 0.4);
+        }
+
+        .modern-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.4s;
+        }
+
+        .modern-btn:hover::before {
+            left: 100%;
+        }
+
+        .feature-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px) scale(1.02);
+        }
+
+        .place-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .place-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .pulse-ring {
+            animation: pulse-ring 2.5s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% { transform: scale(0.9); opacity: 0.8; }
+            80%, 100% { transform: scale(1.3); opacity: 0; }
+        }
+
+        .float-1 { animation: float-1 5s ease-in-out infinite; }
+        .float-2 { animation: float-2 7s ease-in-out infinite; }
+        .float-3 { animation: float-3 6s ease-in-out infinite; }
+
+        @keyframes float-1 {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        @keyframes float-2 {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes float-3 {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--primary-black);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, var(--accent-purple), var(--accent-blue));
+            border-radius: 3px;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .sound-toggle {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            z-index: 1000;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sound-toggle:hover {
+            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        @media (max-width: 768px) {
+            .glass {
+                backdrop-filter: blur(12px);
+            }
+            
+            .sound-toggle {
+                width: 40px;
+                height: 40px;
+                top: 1rem;
+                right: 1rem;
+            }
+
+            .modern-btn {
+                padding: 0.6rem 1.2rem;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .grid-cols-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background Overlay -->
+    <div class="animated-bg"></div>
+
+    <!-- Sound Toggle -->
+    <div class="sound-toggle" id="soundToggle">
+        <i class="fas fa-volume-up text-lg text-white" id="soundIcon"></i>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 w-full z-50 glass shadow-lg">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <div class="relative">
+                        <img src="https://i.postimg.cc/DzbpSLJr/512x512bb.jpg" alt="UglyCash Logo" class="h-10 w-10 rounded-full">
+                        <div class="absolute inset-0 rounded-full border-2 border-white opacity-20 pulse-ring"></div>
+                    </div>
+                    <span class="text-xl font-display font-bold gradient-text">UglyCR</span>
+                </div>
+                <div class="hidden md:flex space-x-6">
+                    <a href="#inicio" class="text-white hover:text-purple-300 transition-colors text-sm">Inicio</a>
+                    <a href="#beneficios" class="text-white hover:text-purple-300 transition-colors text-sm">Beneficios</a>
+                    <a href="#lugares" class="text-white hover:text-purple-300 transition-colors text-sm">Lugares</a>
+                    <a href="#testimonios" class="text-white hover:text-purple-300 transition-colors text-sm">Testimonios</a>
+                </div>
+                <button class="md:hidden text-white" id="mobileMenuBtn">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+            </div>
+            <!-- Mobile Menu -->
+            <div class="md:hidden hidden flex-col space-y-2 mt-2" id="mobileMenu">
+                <a href="#inicio" class="text-white hover:text-purple-300 transition-colors text-sm">Inicio</a>
+                <a href="#beneficios" class="text-white hover:text-purple-300 transition-colors text-sm">Beneficios</a>
+                <a href="#lugares" class="text-white hover:text-purple-300 transition-colors text-sm">Lugares</a>
+                <a href="#testimonios" class="text-white hover:text-purple-300 transition-colors text-sm">Testimonios</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="inicio" class="min-h-screen flex items-center justify-center relative pt-16">
+        <div class="container mx-auto px-4 text-center">
+            <div class="reveal">
+                <h1 class="text-5xl md:text-7xl font-display font-bold gradient-text mb-4">UglyCR</h1>
+                <p class="text-xl md:text-2xl mb-3 text-gray-300">La Revolución de Pagos en</p>
+                <div class="flex items-center justify-center space-x-3 mb-8">
+                    <span class="text-3xl font-bold text-white">Costa Rica</span>
+                    <img src="https://i.postimg.cc/28n4ybd0/Flag-of-Costa-Rica-state-svg.png" alt="Costa Rica" class="h-10 float-1">
+                </div>
+                <p class="text-lg md:text-xl text-gray-400 max-w-3xl mx-auto mb-8 leading-relaxed">
+                    ¡Paga Fácil, Rápido y Seguro! UglyCash está transformando la forma de pagar en Costa Rica con tecnología blockchain avanzada y aceptación en los lugares más populares.
+                </p>
+                <button class="modern-btn">
+                    <i class="fas fa-rocket mr-2"></i>
+                    Comenzar Ahora
+                </button>
+            </div>
+        </div>
+        <div class="absolute top-1/3 left-8 w-16 h-16 bg-accent-purple rounded-full opacity-20 float-2"></div>
+        <div class="absolute bottom-1/3 right-8 w-12 h-12 bg-accent-blue rounded-full opacity-20 float-3"></div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section id="beneficios" class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12 reveal">
+                <h2 class="text-4xl md:text-5xl font-display font-bold gradient-text mb-4">¿Por Qué Usar UglyCash?</h2>
+                <p class="text-lg text-gray-400 max-w-2xl mx-auto">
+                    UglyCash combina velocidad, seguridad y conveniencia en un solo sistema de pago digital.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="feature-card glass-strong rounded-2xl p-6 text-center reveal">
+                    <div class="w-16 h-16 bg-gradient-to-br from-accent-yellow to-accent-dark-gray rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-bolt text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white">Ultra Rápido</h3>
+                    <p class="text-gray-300 text-sm leading-relaxed">
+                        Pagos instantáneos sin esperas. Más rápido que tarjetas tradicionales y efectivo.
+                    </p>
+                </div>
+                <div class="feature-card glass-strong rounded-2xl p-6 text-center reveal">
+                    <div class="w-16 h-16 bg-gradient-to-br from-accent-blue to-accent-dark-gray rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-shield-alt text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white">100% Seguro</h3>
+                    <p class="text-gray-300 text-sm leading-relaxed">
+                        Tecnología blockchain avanzada que garantiza transacciones seguras y transparentes.
+                    </p>
+                </div>
+                <div class="feature-card glass-strong rounded-2xl p-6 text-center reveal">
+                    <div class="w-16 h-16 bg-gradient-to-br from-accent-purple to-accent-dark-gray rounded-xl flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-globe text-2xl text-white"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3 text-white">Amplia Aceptación</h3>
+                    <p class="text-gray-300 text-sm leading-relaxed">
+                        Utilizable en los comercios más populares de Costa Rica y plataformas internacionales.
+                    </p>
+                </div>
+            </div>
+            <!-- UglyCash Visa Image -->
+            <div class="text-center mt-8 reveal">
+                <img src="https://i.postimg.cc/qqp1DFmw/Gh-MN9-Wn-XEAAb-Fa-R.png" alt="UglyCash Visa" class="h-40 mx-auto">
+            </div>
+        </div>
+    </section>
+
+    <!-- Places Section -->
+    <section id="lugares" class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12 reveal">
+                <h2 class="text-4xl md:text-5xl font-display font-bold gradient-text mb-4">¡Usa UglyCash en Estos Lugares!</h2>
+                <p class="text-lg text-gray-400 max-w-2xl mx-auto">
+                    Todos estos establecimientos aceptan UglyCash como método de pago.
+                </p>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+                <div class="place-card glass rounded-xl p-4 text-center reveal group">
+                    <div class="w-12 h-12 bg-gradient-to-br from-accent-blue to-accent-dark-gray rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-shopping-basket text-xl text-white"></i>
+                    </div>
+                    <h3 class="text-base font-semibold text-white mb-1">Unimart</h3>
+                    <p class="text-xs text-gray-400">Compra víveres y esenciales</p>
+                </div>
+                <div class="place-card glass rounded-xl p-4 text-center reveal group">
+                    <div class="w-12 h-12 bg-gradient-to-br from-accent-purple to-accent-dark-gray rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-tv text-xl text-white"></i>
+                    </div>
+                    <h3 class="text-base font-semibold text-white mb-1">HBO Max</h3>
+                    <p class="text-xs text-gray-400">Entretenimiento y streaming</p>
+                </div>
+                <div class="place-card glass rounded-xl p-4 text-center reveal group">
+                    <div class="w-12 h-12 bg-gradient-to-br from-accent-yellow to-accent-dark-gray rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-car-side text-xl text-white"></i>
+                    </div>
+                    <h3 class="text-base font-semibold text-white mb-1">Didi</h3>
+                    <p class="text-xs text-gray-400">Viajes por la ciudad</p>
+                </div>
+                <div class="place-card glass rounded-xl p-4 text-center reveal group">
+                    <div class="w-12 h-12 bg-gradient-to-br from-accent-dark-gray to-black rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fab fa-apple text-xl text-white"></i>
+                    </div>
+                    <h3 class="text-base font-semibold text-white mb-1">Apple</h3>
+                    <p class="text-xs text-gray-400">Apps, música y servicios</p>
+                </div>
+                <div class="place-card glass rounded-xl p-4 text-center reveal group">
+                    <div class="w-12 h-12 bg-gradient-to-br from-black to-accent-dark-gray rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fab fa-uber text-xl text-white"></i>
+                    </div>
+                    <h3 class="text-base font-semibold text-white mb-1">Uber</h3>
+                    <p class="text-xs text-gray-400">Viajes seguros</p>
+                </div>
+                <div class="place-card glass rounded-xl p-4 text-center reveal group">
+                    <div class="w-12 h-12 bg-gradient-to-br from-accent-blue to-accent-dark-gray rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-mobile-alt text-xl text-white"></i>
+                    </div>
+                    <h3 class="text-base font-semibold text-white mb-1">Kolbi</h3>
+                    <p class="text-xs text-gray-400">Telefonía y recargas</p>
+                </div>
+                <div class="place-card glass rounded-xl p-4 text-center reveal group">
+                    <div class="w-12 h-12 bg-gradient-to-br from-accent-purple to-accent-dark-gray rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-shield-alt text-xl text-white"></i>
+                    </div>
+                    <h3 class="text-base font-semibold text-white mb-1">Seguros Lafise</h3>
+                    <p class="text-xs text-gray-400">Pólizas de seguros</p>
+                </div>
+                <div class="place-card glass rounded-xl p-4 text-center reveal group">
+                    <div class="w-12 h-12 bg-gradient-to-br from-accent-blue to-accent-dark-gray rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-wifi text-xl text-white"></i>
+                    </div>
+                    <h3 class="text-base font-semibold text-white mb-1">Claro</h3>
+                    <p class="text-xs text-gray-400">Telefonía e internet</p>
+                </div>
+                <div class="place-card glass rounded-xl p-4 text-center reveal group">
+                    <div class="w-12 h-12 bg-gradient-to-br from-accent-purple to-accent-dark-gray rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-tshirt text-xl text-white"></i>
+                    </div>
+                    <h3 class="text-base font-semibold text-white mb-1">Shein</h3>
+                    <p class="text-xs text-gray-400">Moda internacional</p>
+                </div>
+                <div class="place-card glass rounded-xl p-4 text-center reveal group">
+                    <div class="w-12 h-12 bg-gradient-to-br from-accent-dark-gray to-black rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-book text-xl text-white"></i>
+                    </div>
+                    <h3 class="text-base font-semibold text-white mb-1">Gumroad</h3>
+                    <p class="text-xs text-gray-400">Productos digitales</p>
+                </div>
+                <div class="place-card glass rounded-xl p-4 text-center reveal group">
+                    <div class="w-12 h-12 bg-gradient-to-br from-accent-yellow to-accent-dark-gray rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-graduation-cap text-xl text-white"></i>
+                    </div>
+                    <h3 class="text-base font-semibold text-white mb-1">Hotmart</h3>
+                    <p class="text-xs text-gray-400">Cursos educativos</p>
+                </div>
+                <div class="place-card glass rounded-xl p-4 text-center reveal group">
+                    <div class="w-12 h-12 bg-gradient-to-br from-accent-blue to-accent-dark-gray rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-credit-card text-xl text-white"></i>
+                    </div>
+                    <h3 class="text-base font-semibold text-white mb-1">BAC Credomatic</h3>
+                    <p class="text-xs text-gray-400">Pagos con datáfonos</p>
+                </div>
+                <div class="place-card glass rounded-xl p-4 text-center reveal group">
+                    <div class="w-12 h-12 bg-gradient-to-br from-accent-yellow to-accent-dark-gray rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-motorcycle text-xl text-white"></i>
+                    </div>
+                    <h3 class="text-base font-semibold text-white mb-1">Pedidos Ya</h3>
+                    <p class="text-xs text-gray-400">Comida a domicilio</p>
+                </div>
+                <div class="place-card glass rounded-xl p-4 text-center reveal group">
+                    <div class="w-12 h-12 bg-gradient-to-br from-accent-blue to-accent-dark-gray rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fab fa-paypal text-xl text-white"></i>
+                    </div>
+                    <h3 class="text-base font-semibold text-white mb-1">PayPal</h3>
+                    <p class="text-xs text-gray-400">Pagos internacionales</p>
+                </div>
+                <div class="place-card glass rounded-xl p-4 text-center reveal group">
+                    <div class="w-12 h-12 bg-gradient-to-br from-accent-blue to-accent-dark-gray rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fab fa-microsoft text-xl text-white"></i>
+                    </div>
+                    <h3 class="text-base font-semibold text-white mb-1">Microsoft</h3>
+                    <p class="text-xs text-gray-400">Software y servicios</p>
+                </div>
+                <div class="place-card glass rounded-xl p-4 text-center reveal group">
+                    <div class="w-12 h-12 bg-gradient-to-br from-accent-yellow to-accent-dark-gray rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-hamburger text-xl text-white"></i>
+                    </div>
+                    <h3 class="text-base font-semibold text-white mb-1">McDonald's</h3>
+                    <p class="text-xs text-gray-400">Comida rápida</p>
+                </div>
+                <div class="place-card glass rounded-xl p-4 text-center reveal group">
+                    <div class="w-12 h-12 bg-gradient-to-br from-accent-blue to-accent-dark-gray rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fab fa-amazon text-xl text-white"></i>
+                    </div>
+                    <h3 class="text-base font-semibold text-white mb-1">Amazon</h3>
+                    <p class="text-xs text-gray-400">E-commerce</p>
+                </div>
+                <div class="place-card glass rounded-xl p-4 text-center reveal group">
+                    <div class="w-12 h-12 bg-gradient-to-br from-accent-blue to-accent-dark-gray rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-shopping-cart text-xl text-white"></i>
+                    </div>
+                    <h3 class="text-base font-semibold text-white mb-1">El Rey</h3>
+                    <p class="text-xs text-gray-400">Supermercados</p>
+                </div>
+                <div class="place-card glass rounded-xl p-4 text-center reveal group">
+                    <div class="w-12 h-12 bg-gradient-to-br from-accent-purple to-accent-dark-gray rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-table-tennis text-xl text-white"></i>
+                    </div>
+                    <h3 class="text-base font-semibold text-white mb-1">Volea Pádel</h3>
+                    <p class="text-xs text-gray-400">Canchas y clases</p>
+                </div>
+                <div class="place-card glass rounded-xl p-4 text-center reveal group">
+                    <div class="w-12 h-12 bg-gradient-to-br from-accent-blue to-accent-dark-gray rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-wifi text-xl text-white"></i>
+                    </div>
+                    <h3 class="text-base font-semibold text-white mb-1">Liberty</h3>
+                    <p class="text-xs text-gray-400">Internet y cable</p>
+                </div>
+                <div class="place-card glass rounded-xl p-4 text-center reveal group">
+                    <div class="w-12 h-12 bg-gradient-to-br from-accent-yellow to-accent-dark-gray rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-store text-xl text-white"></i>
+                    </div>
+                    <h3 class="text-base font-semibold text-white mb-1">Vindi</h3>
+                    <p class="text-xs text-gray-400">Tiendas de conveniencia</p>
+                </div>
+                <div class="place-card glass rounded-xl p-4 text-center reveal group">
+                    <div class="w-12 h-12 bg-gradient-to-br from-accent-blue to-accent-dark-gray rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-credit-card text-xl text-white"></i>
+                    </div>
+                    <h3 class="text-base font-semibold text-white mb-1">Pagadito</h3>
+                    <p class="text-xs text-gray-400">Plataforma de pagos</p>
+                </div>
+                <div class="place-card glass rounded-xl p-4 text-center reveal group">
+                    <div class="w-12 h-12 bg-gradient-to-br from-accent-dark-gray to-black rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fas fa-road text-xl text-white"></i>
+                    </div>
+                    <h3 class="text-base font-semibold text-white mb-1">Peaje Ruta 27</h3>
+                    <p class="text-xs text-gray-400">Peajes con QuickPass</p>
+                </div>
+            </div>
+            <div class="text-center mt-8 reveal">
+                <button class="modern-btn">
+                    <i class="fas fa-store mr-2"></i>
+                    Ver Todos los Lugares
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonios" class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12 reveal">
+                <h2 class="text-4xl md:text-5xl font-display font-bold gradient-text mb-4">Lo Que Dicen Nuestros Usuarios</h2>
+                <p class="text-lg text-gray-400">Escucha las experiencias de quienes ya usan UglyCash.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="glass-strong rounded-2xl p-6 reveal">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-gradient-to-br from-accent-purple to-accent-dark-gray rounded-full flex items-center justify-center mr-3">
+                            <span class="text-white font-bold">M</span>
+                        </div>
+                        <div>
+                            <h4 class="text-base font-semibold text-white">María L.</h4>
+                            <p class="text-xs text-gray-400">San José</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 text-sm italic">
+                        "UglyCash ha cambiado la manera en que pago mis compras diarias. Es increíblemente rápido y nunca tengo que preocuparme por llevar efectivo."
+                    </p>
+                    <div class="flex text-accent-yellow mt-3">
+                        <i class="fas fa-star text-sm"></i>
+                        <i class="fas fa-star text-sm"></i>
+                        <i class="fas fa-star text-sm"></i>
+                        <i class="fas fa-star text-sm"></i>
+                        <i class="fas fa-star text-sm"></i>
+                    </div>
+                </div>
+                <div class="glass-strong rounded-2xl p-6 reveal">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-gradient-to-br from-accent-blue to-accent-dark-gray rounded-full flex items-center justify-center mr-3">
+                            <span class="text-white font-bold">C</span>
+                        </div>
+                        <div>
+                            <h4 class="text-base font-semibold text-white">Carlos R.</h4>
+                            <p class="text-xs text-gray-400">Alajuela</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 text-sm italic">
+                        "Como dueño de negocio, UglyCash me ha facilitado recibir pagos sin las altas comisiones de las tarjetas tradicionales. Mis clientes lo adoran."
+                    </p>
+                    <div class="flex text-accent-yellow mt-3">
+                        <i class="fas fa-star text-sm"></i>
+                        <i class="fas fa-star text-sm"></i>
+                        <i class="fas fa-star text-sm"></i>
+                        <i class="fas fa-star text-sm"></i>
+                        <i class="fas fa-star text-sm"></i>
+                    </div>
+                </div>
+                <div class="glass-strong rounded-2xl p-6 reveal">
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 bg-gradient-to-br from-accent-yellow to-accent-dark-gray rounded-full flex items-center justify-center mr-3">
+                            <span class="text-white font-bold">R</span>
+                        </div>
+                        <div>
+                            <h4 class="text-base font-semibold text-white">Roberto M.</h4>
+                            <p class="text-xs text-gray-400">Heredia</p>
+                        </div>
+                    </div>
+                    <p class="text-gray-300 text-sm italic">
+                        "La seguridad que ofrece UglyCash es incomparable. Después de un intento de fraude con mi tarjeta, cambié completamente a UglyCash."
+                    </p>
+                    <div class="flex text-accent-yellow mt-3">
+                        <i class="fas fa-star text-sm"></i>
+                        <i class="fas fa-star text-sm"></i>
+                        <i class="fas fa-star text-sm"></i>
+                        <i class="fas fa-star text-sm"></i>
+                        <i class="fas fa-star text-sm"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-16">
+        <div class="container mx-auto px-4 text-center">
+            <div class="glass-strong rounded-2xl p-8 max-w-3xl mx-auto reveal">
+                <h2 class="text-4xl md:text-5xl font-display font-bold gradient-text mb-4">¡Únete a la Revolución UglyCash!</h2>
+                <p class="text-lg text-gray-300 mb-6 max-w-xl mx-auto">
+                    Más de 10,000 costarricenses ya disfrutan de la libertad, seguridad y conveniencia de UglyCash. Sé parte del futuro de los pagos en Costa Rica.
+                </p>
+                <button class="modern-btn">
+                    <i class="fas fa-rocket mr-2"></i>
+                    Comenzar Ahora
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8">
+        <div class="container mx-auto px-4 text-center">
+            <div class="mb-4">
+                <span class="text-xl font-display font-bold gradient-text">UglyCash</span>
+            </div>
+            <p class="text-sm text-gray-400 mb-4">
+                © 2023 UglyCash. Transformando pagos en Costa Rica.
+            </p>
+            <p class="text-sm text-gray-400">
+                UglyCash es una solución de pago digital innovadora con tecnología blockchain diseñada para Costa Rica.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Reveal animations on scroll
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.2 });
+
+        reveals.forEach(reveal => observer.observe(reveal));
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Sound toggle
+        const soundToggle = document.getElementById('soundToggle');
+        const soundIcon = document.getElementById('soundIcon');
+        let isMuted = false;
+        soundToggle.addEventListener('click', () => {
+            isMuted = !isMuted;
+            soundIcon.classList.toggle('fa-volume-up', !isMuted);
+            soundIcon.classList.toggle('fa-volume-mute', isMuted);
+        });
+    </script>
+</body>
+</html>
