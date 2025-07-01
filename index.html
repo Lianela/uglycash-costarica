@@ -254,7 +254,7 @@
         
         /* Features Section */
         .features-section {
-            padding: 100px 0;
+            padding: 50px 0; /* Reduced padding-top to bring it closer to hero section */
             background-color: var(--darker-bg); /* This background ensures it covers GIFs on scroll */
             position: relative;
             text-align: center; /* Center align content within this section */
@@ -397,7 +397,7 @@
             display: flex;
             justify-content: center;
             gap: 20px;
-            margin-top: 15px; /* Adjusted margin to be closer to cards */
+            margin-top: 5px; /* Adjusted margin to be closer to cards */
         }
         
         .nav-btn {
@@ -424,7 +424,7 @@
             display: flex;
             justify-content: center;
             gap: 12px;
-            margin-top: 10px; /* Adjusted margin to be closer to buttons */
+            margin-top: 5px; /* Adjusted margin to be closer to buttons */
         }
         
         .indicator {
@@ -599,7 +599,8 @@
 
             /* Adjust hero section content position for mobile */
             .hero-section {
-                padding-top: 120px; /* Increased padding-top to push content down from header */
+                min-height: 75vh; /* Reduced min-height for mobile */
+                padding-top: 90px; /* Adjusted padding-top to move content higher */
                 align-items: flex-start; /* Align content to the top */
                 justify-content: center; /* Center horizontally */
             }
@@ -623,6 +624,10 @@
                 font-size: 2.2rem;
             }
             
+            .features-section {
+                padding: 30px 0; /* Further reduced padding for mobile */
+            }
+
             .card {
                 min-height: 380px; /* Increased min-height for more space */
                 padding: 0.8rem; /* Adjusted padding */
