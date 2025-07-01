@@ -708,6 +708,66 @@
             .card-container {
                 padding: 0 15px; /* Consistent padding for mobile */
             }
+
+            /* NEW STYLES FOR CARD-2 */
+            .card-2 .stretched-text {
+                font-size: 1.6rem;
+                transform: scaleY(1.2);
+                letter-spacing: 0.1em;
+                margin-bottom: 0.5rem;
+            }
+
+            .card-2 h3 {
+                font-size: 1.7rem;
+                margin-bottom: 0.4rem;
+            }
+
+            .card-2 .card-content > p.text-light {
+                font-size: 1rem;
+                line-height: 1.5;
+                word-break: break-word;
+                margin: 0.5rem 0 1rem;
+            }
+
+            .card-2 .icon-grid {
+                display: flex;
+                overflow-x: auto;
+                gap: 10px;
+                padding-bottom: 8px;
+                margin: 0 auto;
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .card-2 .icon-item {
+                flex: 0 0 auto;
+                min-width: 90px;
+                background: rgba(255, 255, 255, 0.08);
+                border-radius: 12px;
+                padding: 10px;
+                text-align: center;
+                transition: background 0.3s ease;
+            }
+
+            .card-2 .icon-item:hover {
+                background: rgba(126, 34, 206, 0.2);
+            }
+
+            .card-2 .icon-item i,
+            .card-2 .icon-item img {
+                font-size: 1.8rem;
+                height: 1.8rem;
+                width: auto;
+                object-fit: contain;
+                margin-bottom: 4px;
+            }
+
+            .card-2 .icon-item p {
+                font-size: 0.8rem;
+                line-height: 1.2;
+                margin: 0;
+                white-space: nowrap;
+            }
         }
         
         @media (max-width: 480px) {
