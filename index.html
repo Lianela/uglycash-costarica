@@ -355,17 +355,6 @@
             text-align: center; /* Ensure text alignment is centered within this container */
         }
         
-        .card h3 {
-            font-size: 2.2rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(90deg, #ffffff, #d1d5db);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            color: transparent;
-        }
-        
         .card p {
             font-size: 1.1rem;
             line-height: 1.7;
@@ -642,7 +631,8 @@
             .card-content > p:first-of-type { 
                 font-size: 1rem; /* Adjust font size */
                 line-height: 1.4; /* Make line height tighter */
-                /* Removed display: -webkit-box, -webkit-line-clamp, -webkit-box-orient, overflow, text-overflow */
+                white-space: normal; /* Ensure text wraps */
+                word-break: break-word; /* Break long words if necessary */
                 margin: 0.5rem 0 1rem; /* Adjust margin for compactness */
             }
             
@@ -657,6 +647,8 @@
                 font-size: 0.8rem; /* Smaller font for icon text */
                 line-height: 1.2;
                 margin-top: 5px; /* Add a small margin above text */
+                white-space: normal; /* Ensure icon text wraps */
+                word-break: break-word; /* Break long words if necessary */
             }
             .icon-item:nth-child(n+3) { /* Hide icons from the 3rd one onwards */
                 display: none;
@@ -737,7 +729,8 @@
             }
             .card-content > p:first-of-type {
                 font-size: 0.9rem; /* Even smaller font for card paragraphs */
-                /* Removed line clamping for small mobile screens as well */
+                white-space: normal; /* Ensure text wraps */
+                word-break: break-word; /* Break long words if necessary */
                 margin: 0.4rem 0 0.8rem;
             }
             
@@ -752,6 +745,8 @@
             .icon-item p {
                 display: block; /* Ensure text is visible */
                 font-size: 0.7rem; /* Even smaller font for icon text */
+                white-space: normal; /* Ensure icon text wraps */
+                word-break: break-word; /* Break long words if necessary */
             }
             .icon-item i, .icon-item img {
                 font-size: 1.4rem;
