@@ -596,6 +596,21 @@
         }
         
         @media (max-width: 768px) {
+            /* Single GIF lane for mobile */
+            .video-background {
+                display: block;
+            }
+            .video-lane {
+                width: 100%;
+                height: 100%;
+            }
+            .video-lane:nth-child(n+2) { /* Hide 2nd, 3rd, etc. lanes */
+                display: none;
+            }
+            .video-lane:nth-child(1) .carousel-inner {
+                animation-delay: 0s !important; /* Ensure no delay for the single mobile lane */
+            }
+
             .hero-title {
                 font-size: 2.8rem;
             }
@@ -682,6 +697,20 @@
             /* Adjust logo size for mobile */
             .logo {
                 font-size: 2rem; /* Smaller font size for the logo */
+            }
+
+            /* Acceptance Section specific mobile styles */
+            .acceptance-section {
+                padding: 60px 0; /* Adjusted padding for the section */
+            }
+            .desktop-only {
+                display: none; /* Hide desktop-specific content on mobile */
+            }
+            .mobile-only {
+                display: block; /* Show mobile-specific content on mobile */
+            }
+            .acceptance-section > div:last-of-type { /* Targets the div containing the list and last p */
+                padding: 20px 15px 0 !important; /* Adjust padding for mobile */
             }
         }
         
@@ -805,6 +834,22 @@
             color: var(--accent-light);
         }
 
+        /* Desktop specific acceptance list */
+        .acceptance-list-desktop {
+            list-style: disc; /* Use disc for list items */
+            padding-left: 20px; /* Indent list items */
+            text-align: left;
+            margin: 0 auto 20px;
+            max-width: 600px;
+        }
+
+        .acceptance-list-desktop li {
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--text-light);
+        }
+
         /* How to Start Section */
         .how-to-start-section {
             padding: 100px 20px;
@@ -889,25 +934,42 @@
         <section class="hero-section">
             <!-- Background GIFs arranged in 3 lanes with vertical slide-up effect -->
             <div class="video-background">
-                <!-- Single Lane for Mobile -->
+                <!-- Lane 1 -->
                 <div class="video-lane">
                     <div class="carousel-inner">
                         <img src="https://i.postimg.cc/1RCJGzPg/Gana-el-1-sobre-el-balance-de-tus-amigos-con-el-programa-de-referidos-UGLYCASH-UGLYCASH-720p-h2.gif" alt="[Image of GIF 1]" class="bg-gif">
                         <img src="https://i.postimg.cc/MTttr6QF/Tutorial-de-c-mo-acceder-a-tu-c-digo-de-referido-UGLYCASH-UGLYCASH-720p-h264.gif" alt="[Image of GIF 2]" class="bg-gif">
                         <img src="https://i.postimg.cc/7hW9wKX1/Tutorial-de-c-mo-ganar-el-1-anual-del-balance-de-tus-amigos-UGLYCASH-UGLYCASH-720p-h264.gif" alt="[Image of GIF 3]" class="bg-gif">
-                        <img src="https://i.postimg.cc/W452NrLp/1-A-O-EN-WISE-VS-1-A-O-EN-UGLYCASH-UGLYCASH-720p-h264.gif" alt="[Image of GIF 4]" class="bg-gif">
-                        <img src="https://i.postimg.cc/Y2DwygQM/POR-QU-SIGUES-QUERIENDO-ENTRAR-EN-WISE-UGLYCASH-UGLYCASH-720p-h264.gif" alt="[Image of GIF 5]" class="bg-gif">
-                        <img src="https://i.postimg.cc/htTWj56t/3-MOMENTOS-EN-LOS-QUE-NECESITAS-UGLYCASH-Y-NO-PAYONEER-UGLYCASH-720p-h264.gif" alt="[Image of GIF 6]" class="bg-gif">
-                        <img src="https://i.postimg.cc/kgvCsHch/C-MO-PUEDES-MANEJAR-TU-DINERO-EN-PAYPAL-UGLYCASH-UGLYCASH-720p-h264.gif" alt="[Image of GIF 7]" class="bg-gif">
-                        <img src="https://i.postimg.cc/g0MWF61V/PAYPAL-VS-UGLY-CASH-RENDIMIENTOS-UGLYCASH-720p-h264.gif" alt="[Image of GIF 8]" class="bg-gif">
-                        <img src="https://i.postimg.cc/sgsdMcrP/POR-QU-UGLYCASH-ES-LA-MEJOR-MANERA-DE-SACAR-LOS-BALANCES-QUE-TIENES-EN-PAYPAL-UGLYCASH-720p-h2.gif" alt="[Image of GIF 9]" class="bg-gif">
                         <!-- Duplicates for seamless loop -->
                         <img src="https://i.postimg.cc/1RCJGzPg/Gana-el-1-sobre-el-balance-de-tus-amigos-con-el-programa-de-referidos-UGLYCASH-UGLYCASH-720p-h2.gif" alt="[Image of GIF 1 Duplicate]" class="bg-gif">
                         <img src="https://i.postimg.cc/MTttr6QF/Tutorial-de-c-mo-acceder-a-tu-c-digo-de-referido-UGLYCASH-UGLYCASH-720p-h264.gif" alt="[Image of GIF 2 Duplicate]" class="bg-gif">
                         <img src="https://i.postimg.cc/7hW9wKX1/Tutorial-de-c-mo-ganar-el-1-anual-del-balance-de-tus-amigos-UGLYCASH-UGLYCASH-720p-h264.gif" alt="[Image of GIF 3 Duplicate]" class="bg-gif">
                     </div>
                 </div>
-                <!-- Removed Lane 2 and Lane 3 for mobile optimization -->
+                <!-- Lane 2 -->
+                <div class="video-lane">
+                    <div class="carousel-inner">
+                        <img src="https://i.postimg.cc/W452NrLp/1-A-O-EN-WISE-VS-1-A-O-EN-UGLYCASH-UGLYCASH-720p-h264.gif" alt="[Image of GIF 4]" class="bg-gif">
+                        <img src="https://i.postimg.cc/Y2DwygQM/POR-QU-SIGUES-QUERIENDO-ENTRAR-EN-WISE-UGLYCASH-UGLYCASH-720p-h264.gif" alt="[Image of GIF 5]" class="bg-gif">
+                        <img src="https://i.postimg.cc/htTWj56t/3-MOMENTOS-EN-LOS-QUE-NECESITAS-UGLYCASH-Y-NO-PAYONEER-UGLYCASH-720p-h264.gif" alt="[Image of GIF 6]" class="bg-gif">
+                        <!-- Duplicates for seamless loop -->
+                        <img src="https://i.postimg.cc/W452NrLp/1-A-O-EN-WISE-VS-1-A-O-EN-UGLYCASH-UGLYCASH-720p-h264.gif" alt="[Image of GIF 4 Duplicate]" class="bg-gif">
+                        <img src="https://i.postimg.cc/Y2DwygQM/POR-QU-SIGUES-QUERIENDO-ENTRAR-EN-WISE-UGLYCASH-UGLYCASH-720p-h264.gif" alt="[Image of GIF 5 Duplicate]" class="bg-gif">
+                        <img src="https://i.postimg.cc/htTWj56t/3-MOMENTOS-EN-LOS-QUE-NECESITAS-UGLYCASH-Y-NO-PAYONEER-UGLYCASH-720p-h264.gif" alt="[Image of GIF 6 Duplicate]" class="bg-gif">
+                    </div>
+                </div>
+                <!-- Lane 3 -->
+                <div class="video-lane">
+                    <div class="carousel-inner">
+                        <img src="https://i.postimg.cc/kgvCsHch/C-MO-PUEDES-MANEJAR-TU-DINERO-EN-PAYPAL-UGLYCASH-UGLYCASH-720p-h264.gif" alt="[Image of GIF 7]" class="bg-gif">
+                        <img src="https://i.postimg.cc/g0MWF61V/PAYPAL-VS-UGLY-CASH-RENDIMIENTOS-UGLYCASH-720p-h264.gif" alt="[Image of GIF 8]" class="bg-gif">
+                        <img src="https://i.postimg.cc/sgsdMcrP/POR-QU-UGLYCASH-ES-LA-MEJOR-MANERA-DE-SACAR-LOS-BALANCES-QUE-TIENES-EN-PAYPAL-UGLYCASH-720p-h2.gif" alt="[Image of GIF 9]" class="bg-gif">
+                        <!-- Duplicates for seamless loop -->
+                        <img src="https://i.postimg.cc/kgvCsHch/C-MO-PUEDES-MANEJAR-TU-DINERO-EN-PAYPAL-UGLYCASH-UGLYCASH-720p-h264.gif" alt="[Image of GIF 7 Duplicate]" class="bg-gif">
+                        <img src="https://i.postimg.cc/g0MWF61V/PAYPAL-VS-UGLY-CASH-RENDIMIENTOS-UGLYCASH-720p-h264.gif" alt="[Image of GIF 8 Duplicate]" class="bg-gif">
+                        <img src="https://i.postimg.cc/sgsdMcrP/POR-QU-UGLYCASH-ES-LA-MEJOR-MANERA-DE-SACAR-LOS-BALANCES-QUE-TIENES-EN-PAYPAL-UGLYCASH-720p-h2.gif" alt="[Image of GIF 9 Duplicate]" class="bg-gif">
+                    </div>
+                </div>
             </div>
 
             <div class="hero-content">
@@ -1253,7 +1315,28 @@
         <section class="acceptance-section">
             <h2 class="section-title">Nuestra <span class="stretched-text">Aceptación</span></h2>
             <p class="section-subtitle">UglyVisa es aceptada en una amplia variedad de comercios y plataformas.</p>
-            <div style="text-align: center; padding: 50px;">
+
+            <!-- Desktop-specific details for Acceptance section -->
+            <div class="acceptance-details desktop-only">
+                <p class="text-light" style="font-size: 1.1rem; line-height: 1.7; margin-bottom: 20px; max-width: 800px; margin-left: auto; margin-right: auto;">
+                    UglyCash te ofrece mucho más que una tarjeta. Con nosotros, puedes:
+                </p>
+                <ul class="text-light acceptance-list-desktop">
+                    <li>Generar hasta un 8% anual por tener balance en stablecoins.</li>
+                    <li>Obtener una cuenta virtual en Dólares y Euros sin costo de comisión ni apertura, ideal para recibir transferencias de individuos, empresas o plataformas como PayPal, Upwork, Deel, Airbnb y más.</li>
+                    <li>Enviar y recibir stablecoins en dólares globalmente, disfrutando de la misma agilidad que PayPal pero sin las comisiones internacionales.</li>
+                    <li>Disfrutar de 1% Cashback en todas tus compras. Consigue una tarjeta virtual o física para gastar tus stablecoins donde se acepte Visa y retira dinero en cajeros automáticos sin costo mensual.</li>
+                </ul>
+            </div>
+
+            <!-- Mobile-specific details for Acceptance section -->
+            <div class="acceptance-details mobile-only">
+                <p class="text-light" style="font-size: 0.95rem; line-height: 1.4; margin-bottom: 15px; max-width: 90%; margin-left: auto; margin-right: auto;">
+                    Con UglyCash, genera hasta 8% anual en stablecoins. Accede a una cuenta virtual USD/EUR sin costo para pagos globales. Envía stablecoins sin comisiones y obtén 1% Cashback con tu UglyVisa.
+                </p>
+            </div>
+
+            <div style="text-align: center; padding: 50px 20px 0;">
                 <p class="text-light" style="font-size: 1.2rem; margin-bottom: 20px;">
                     Explora algunos de los lugares y plataformas donde puedes usar tu UglyVisa:
                 </p>
