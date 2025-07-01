@@ -613,8 +613,8 @@
             }
             
             .card {
-                min-height: 300px; /* Increased from 250px */
-                padding: 1rem; /* Adjusted padding */
+                min-height: 320px; /* Increased from 300px for more space */
+                padding: 0.8rem; /* Adjusted padding */
             }
             
             .stretched-text {
@@ -623,17 +623,17 @@
             }
             
             .card h3 {
-                font-size: 1.8rem; /* Keep existing for 768px breakpoint */
-                margin-bottom: 0.8rem; /* Reduce margin */
+                font-size: 1.6rem; /* Adjusted font size for card titles */
+                margin-bottom: 0.5rem; /* Reduced margin */
             }
 
-            /* Main paragraph in card-content - removed line clamping */
+            /* Main paragraph in card-content */
             .card-content > p:first-of-type { 
-                font-size: 1rem; /* Adjust font size */
-                line-height: 1.4; /* Make line height tighter */
+                font-size: 0.95rem; /* Slightly smaller font */
+                line-height: 1.3; /* Tighter line height */
                 white-space: normal; /* Ensure text wraps */
                 word-break: break-word; /* Break long words if necessary */
-                margin: 0.3rem 0 0.8rem; /* Adjusted margin-top */
+                margin: 0.3rem 0 0.8rem; /* Adjusted margin */
             }
             
             .icon-grid {
@@ -706,7 +706,7 @@
                 padding: 20px 15px 0 !important; /* Adjust padding for mobile */
             }
             .card-container {
-                padding: 0 10px; /* Reduced padding for better centering */
+                padding: 0 5px; /* Reduced padding for better centering */
             }
         }
         
@@ -724,14 +724,15 @@
             }
             
             .card {
-                min-height: 250px; /* Increased from 220px */
+                min-height: 280px; /* Increased from 250px */
                 padding: 0.5rem; /* Even smaller padding */
             }
             .card h3 {
                 font-size: 1.4rem; /* Smaller font for card titles */
+                margin-bottom: 0.3rem; /* Even smaller margin */
             }
             .card-content > p:first-of-type {
-                font-size: 0.9rem; /* Even smaller font for card paragraphs */
+                font-size: 0.85rem; /* Even smaller font for card paragraphs */
                 white-space: normal; /* Ensure text wraps */
                 word-break: break-word; /* Break long words if necessary */
                 margin: 0.4rem 0 0.8rem;
@@ -773,6 +774,9 @@
             }
             .not-a-bank-section .section-subtitle {
                 font-size: 1rem;
+            }
+            .card-container {
+                padding: 0; /* Removed all padding for full width */
             }
         }
         
