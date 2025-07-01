@@ -697,10 +697,10 @@
             }
             /* Moved desktop-only/mobile-only rules here for better organization */
             .desktop-only {
-                display: none; /* Hide desktop-specific content on mobile */
+                display: none !important; /* Added !important */
             }
             .mobile-only {
-                display: block; /* Show mobile-specific content on mobile */
+                display: block !important; /* Added !important */
             }
             .acceptance-section > div:last-of-type { /* Targets the div containing the list and last p */
                 padding: 20px 15px 0 !important; /* Adjust padding for mobile */
