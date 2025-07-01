@@ -629,7 +629,7 @@
             }
             
             .icon-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(2, 1fr); /* Always 2 columns for mobile */
             }
             /* Not a Bank Section Responsive */
             .not-a-bank-section {
@@ -640,20 +640,6 @@
             }
             .not-a-bank-section .section-subtitle {
                 font-size: 1.2rem;
-            }
-
-            /* Mobile optimization for GIF background */
-            .video-background {
-                flex-direction: column; /* Ensure vertical layout even if only one is visible */
-            }
-            .video-lane:nth-child(2),
-            .video-lane:nth-child(3) {
-                display: none; /* Hide the second and third lanes */
-            }
-            .video-lane:nth-child(1) {
-                flex: none; /* Remove flex properties */
-                width: 100%; /* Make the first lane take full width */
-                max-width: 100%; /* Ensure it doesn't exceed 100% */
             }
 
             /* Adjust button size for mobile */
@@ -681,8 +667,15 @@
                 font-size: 1.8rem;
             }
             
+            .card {
+                min-height: 350px; /* Reduced min-height for smaller screens */
+                padding: 1rem; /* Reduced padding for smaller screens */
+            }
             .card h3 {
-                font-size: 1.8rem;
+                font-size: 1.6rem; /* Smaller font for card titles */
+            }
+            .card p {
+                font-size: 1rem; /* Smaller font for card paragraphs */
             }
             
             .stretched-text {
@@ -691,7 +684,10 @@
             }
             
             .icon-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr); /* Stays at 2 columns */
+            }
+            .icon-item p {
+                font-size: 0.85rem; /* Smaller font for icon item text */
             }
             
             .nav-btn {
