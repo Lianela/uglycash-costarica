@@ -103,7 +103,7 @@
             color: white; 
         }
 
-        /* Navigation Menu */
+        /* Navigation Menu - Simplified */
         nav ul {
             list-style: none;
             display: flex;
@@ -268,6 +268,7 @@
             padding: 100px 0;
             background-color: var(--darker-bg); /* This background ensures it covers GIFs on scroll */
             position: relative;
+            text-align: center; /* Center align content within this section */
         }
         
         .section-title {
@@ -288,7 +289,12 @@
             text-align: center;
             color: var(--text-light);
             max-width: 700px;
-            margin: 0 auto 70px;
+            margin: 0 auto 30px; /* Adjusted margin-bottom for button placement */
+        }
+
+        /* Style for the "Cómo Empezar" button in Features section */
+        .features-section .btn.nav-link[data-page="howToStart"] {
+            margin-bottom: 50px; /* Add space below the button and before cards */
         }
         
         /* Page Content Containers */
@@ -808,13 +814,12 @@
     <!-- Header -->
     <header>
         <div class="header-container">
-            <!-- Updated logo to use Staatliches font -->
+            <!-- Logo now acts as the "Home" link -->
             <a href="#" class="logo nav-link" data-page="home">UGLYCASH</a>
             <nav>
+                <!-- Removed "Inicio" and "Cómo Empezar" from header nav -->
                 <ul>
-                    <li><a href="#" class="nav-link" data-page="home">Inicio</a></li>
-                    <li><a href="#" class="nav-link" data-page="howToStart">Cómo Empezar</a></li>
-                    <li><a href="#" class="nav-link" data-page="acceptance">Aceptación</a></li>
+                    <!-- Removed Aceptación from here -->
                 </ul>
             </nav>
             <a href="https://uglycash.onelink.me/oMJe/download" class="btn">Comenzar Ahora</a>
@@ -873,8 +878,12 @@
                 <p class="text-light fade-in delay-2">
                     Pagos fáciles, seguros y sencillos, de la mano del BlockChain, aceptado en tus lugares favoritos.
                 </p>
-                <!-- Updated 'Conoce más aquí' button to link directly to YouTube video -->
-                <a href="https://www.youtube.com/watch?v=qgjbsMujklY" class="btn fade-in delay-3" style="margin-top: 20px;" target="_blank">Conoce más aquí</a>
+                <div style="display: flex; justify-content: center; gap: 20px; margin-top: 20px;">
+                    <!-- 'Conoce más aquí' button -->
+                    <a href="https://www.youtube.com/watch?v=qgjbsMujklY" class="btn fade-in delay-3" target="_blank">Conoce más aquí</a>
+                    <!-- 'Aceptación' button on landing page (kept as requested) -->
+                    <button class="btn nav-link fade-in delay-4" data-page="acceptance">Aceptación</button>
+                </div>
             </div>
         </section>
 
@@ -884,6 +893,8 @@
             <p class="section-subtitle fade-in delay-1">
                 Descubre lo que hace único a UglyCash
             </p>
+            <!-- New 'Cómo Empezar' button in the Features section (moved here) -->
+            <button class="btn nav-link" data-page="howToStart" style="margin-bottom: 50px;">Cómo Empezar</button>
             
             <div class="card-container">
                 <div class="cards-wrapper" id="cardsWrapper">
@@ -1049,7 +1060,6 @@
         <section class="how-to-start-section">
             <h2 class="section-title">Cómo <span class="stretched-text">Transferir Fondos</span> a tu Cuenta de UglyCash</h2>
             <p class="section-subtitle">En esta breve guía, te explicaremos paso a paso cómo realizar el fondeo de tu cuenta de UglyCash utilizando los servicios de Coinpay de forma segura y eficiente.</p>
-            <p class="section-subtitle">Guía: Computekni | Página: Kyatto</p>
             
             <div class="step-card">
                 <h3>Paso 1: Depositar Fondos en UglyCash</h3>
@@ -1224,7 +1234,7 @@
         <div class="footer-content">
             <div class="logo" style="font-size: 2rem; margin-bottom: 20px;">UGLYCASH</div>
             <p class="text-light">Hecho con ❤️ en Costa Rica</p>
-            <p class="text-light mt-4">Logos, imágenes y videos pertenecen a UglyCash. © 2025 UglyCash.</p>
+            <p class="text-light mt-4">Logos/Imágenes/Videos pertenecen a UglyCash. © 2023 UglyCash.</p>
             <div class="copyright">
                 <p>Este proyecto es únicamente informativo y de ayuda, para más información visita UglyCash.</p>
             </div>
@@ -1334,7 +1344,7 @@
                 { name: "Didi", icon: "fas fa-taxi" },
                 { name: "Uber", icon: "fas fa-taxi" },
                 { name: "Pasaje Ruta 27", icon: "fas fa-taxi" },
-                { name: "Seguros Lafise", icon: "fas fa-plane-departure" },
+                { name: "Seguros Lafise", icon: "fas fa-hand-holding-usd" }, /* Changed icon here */
                 { name: "Datáfonos Compra Click - BAC Credomatic", icon: "fab fa-cc-visa" },
                 { name: "Pagadito", icon: "fab fa-cc-visa" },
                 { name: "Volea Pádel", icon: "fas fa-volleyball-ball" }, 
@@ -1411,11 +1421,10 @@
             });
 
             // Handle the "Conoce más aquí" button on the Hero section
-            const conoceMasBtn = document.querySelector('.hero-content .btn');
+            const conoceMasBtn = document.querySelector('.hero-content .btn[href="https://www.youtube.com/watch?v=qgjbsMujklY"]');
             if (conoceMasBtn) {
                 conoceMasBtn.addEventListener('click', function(event) {
-                    // Changed this to direct link, no longer using showPage for this button
-                    // The href is set directly in the HTML for this button.
+                    // This button now has a direct href, no need for showPage
                 });
             }
 
