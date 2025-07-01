@@ -178,35 +178,35 @@
 
         /* Inner container for the actual GIFs that will move */
         .carousel-inner {
-            display: flex;
-            flex-direction: column;
-            /* Total height of all GIFs combined. Since each GIF should fill the .video-lane height,
-               and we have 3 unique + 3 duplicates = 6 GIFs, total height is 600% of lane height. */
-            height: 600%; 
-            
-            /* Animation for the discrete slide up */
-            animation: slideUpCarousel 15s linear infinite; /* Reduced duration for faster effect */
+            position: relative; /* Changed from flex to relative for absolute positioning of wrappers */
+            width: 100%;
+            height: 100%;
+            /* Removed animation: slideUpCarousel */
         }
 
-        /* Staggered animation delays for each lane to create a dynamic look */
-        .video-lane:nth-child(1) .carousel-inner { animation-delay: 0s; }
-        .video-lane:nth-child(2) .carousel-inner { animation-delay: -5s; } /* Adjusted delay for new duration */
-        .video-lane:nth-child(3) .carousel-inner { animation-delay: -10s; } /* Adjusted delay for new duration */
-
-        .bg-gif { /* Class for images inside lanes */
-            flex-shrink: 0; /* Important: prevent images from shrinking */
+        .gif-wrapper { /* New wrapper for each GIF */
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: calc(100% / 6); /* Each GIF takes 1/6th of the total .carousel-inner height,
-                                       meaning it effectively fills 100% of the visible .video-lane height */
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out; /* Smooth fade transition */
+            display: flex; /* To center the image within the wrapper if needed */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .gif-wrapper.active {
+            opacity: 1;
+        }
+        
+        .bg-gif { /* Class for images inside lanes */
+            width: 100%;
+            height: 100%;
             object-fit: cover; /* Cover the area, cropping if necessary */
             filter: blur(15px); /* Apply blur effect constantly */
             opacity: 0.7; /* Adjust opacity for background effect */
-        }
-
-        /* Keyframes for continuous seamless vertical slide up */
-        @keyframes slideUpCarousel {
-            0% { transform: translateY(0%); }
-            100% { transform: translateY(-50%); } /* Scrolls through the 3 unique GIFs, then snaps back */
         }
 
         /* Overlay for better text readability on top of GIFs */
@@ -278,12 +278,12 @@
             text-align: center;
             color: var(--text-light);
             max-width: 700px;
-            margin: 0 auto 30px; /* Adjusted margin-bottom for button placement */
+            margin: 0 auto 15px; /* Adjusted margin-bottom for button placement */
         }
 
         /* Style for the "Cómo Empezar" button in Features section */
         .features-section .btn.nav-link[data-page="howToStart"] {
-            margin-bottom: 50px; /* Add space below the button and before cards */
+            margin-bottom: 30px; /* Adjusted padding */
         }
         
         /* Page Content Containers */
@@ -397,7 +397,7 @@
             display: flex;
             justify-content: center;
             gap: 20px;
-            margin-top: 40px;
+            margin-top: 20px; /* Adjusted margin */
         }
         
         .nav-btn {
@@ -424,7 +424,7 @@
             display: flex;
             justify-content: center;
             gap: 12px;
-            margin-top: 30px;
+            margin-top: 15px; /* Adjusted margin */
         }
         
         .indicator {
@@ -546,6 +546,72 @@
             line-height: 1.7;
             margin-bottom: 10px;
         }
+
+        /* 🌈 RGB Split */
+        .rgb-glitch {
+            position: relative;
+        }
+
+        .rgb-glitch::before,
+        .rgb-glitch::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            /* Using background-image from the actual img src for pseudo-elements */
+            background-size: cover;
+            background-position: center;
+            mix-blend-mode: screen;
+            pointer-events: none;
+            opacity: 0.5;
+            transition: transform 0.5s ease, filter 0.5s ease; /* Smooth transition for effects */
+        }
+
+        .rgb-glitch::before {
+            transform: translate(2px, 0);
+            filter: brightness(1.2) contrast(1.2) sepia(1) hue-rotate(180deg);
+        }
+
+        .rgb-glitch::after {
+            transform: translate(-2px, 0);
+            filter: brightness(1.2) contrast(1.2) sepia(1) hue-rotate(300deg);
+        }
+
+        /* ⚡ Glitch Move */
+        .glitch-effect {
+            animation: glitchMove 1s infinite;
+        }
+
+        @keyframes glitchMove {
+            0%, 100% { transform: translate(0, 0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(2px, -2px); }
+            60% { transform: translate(-1px, 1px); }
+            80% { transform: translate(1px, -1px); }
+        }
+
+        /* 🔥 Flicker */
+        .flicker-effect {
+            animation: flickerAnimation 1.2s infinite;
+        }
+
+        @keyframes flickerAnimation {
+            0%, 100% { opacity: 1; }
+            10% { opacity: 0.9; }
+            20% { opacity: 0.95; }
+            30% { opacity: 0.7; }
+            40% { opacity: 0.85; }
+            50% { opacity: 0.6; }
+            60% { opacity: 0.9; }
+            70% { opacity: 0.75; }
+            80% { opacity: 0.95; }
+            90% { opacity: 0.8; }
+        }
+
+        /* 🚀 Speed Skew */
+        .speed-effect-class {
+            transform: skewX(-4deg) scale(1.02);
+            filter: blur(1px) brightness(1.15) saturate(1.2);
+        }
         
         /* Responsive Design */
         @media (max-width: 1200px) {
@@ -596,9 +662,7 @@
             .video-lane:nth-child(n+2) { /* Hide 2nd, 3rd, etc. lanes */
                 display: none;
             }
-            .video-lane:nth-child(1) .carousel-inner {
-                animation-delay: 0s !important; /* Ensure no delay for the single mobile lane */
-            }
+            /* No animation delay needed for single lane */
 
             .hero-title {
                 font-size: 2.8rem;
@@ -633,7 +697,7 @@
                 line-height: 1.4; /* Adjusted line height */
                 white-space: normal; /* Ensure text wraps */
                 word-break: break-word; /* Break long words if necessary */
-                margin: 0.2rem 0 1.5rem; /* Increased bottom margin for better separation from icons */
+                margin: 0.2rem 0 1rem; /* Adjusted bottom margin for better separation from icons */
             }
             
             .icon-grid {
@@ -1003,37 +1067,43 @@
                 <!-- Lane 1 -->
                 <div class="video-lane">
                     <div class="carousel-inner">
-                        <img src="https://i.postimg.cc/1RCJGzPg/Gana-el-1-sobre-el-balance-de-tus-amigos-con-el-programa-de-referidos-UGLYCASH-UGLYCASH-720p-h2.gif" alt="" class="bg-gif">
-                        <img src="https://i.postimg.cc/MTttr6QF/Tutorial-de-c-mo-acceder-a-tu-c-digo-de-referido-UGLYCASH-UGLYCASH-720p-h264.gif" alt="" class="bg-gif">
-                        <img src="https://i.postimg.cc/7hW9wKX1/Tutorial-de-c-mo-ganar-el-1-anual-del-balance-de-tus-amigos-UGLYCASH-UGLYCASH-720p-h264.gif" alt="" class="bg-gif">
-                        <!-- Duplicates for seamless loop -->
-                        <img src="https://i.postimg.cc/1RCJGzPg/Gana-el-1-sobre-el-balance-de-tus-amigos-con-el-programa-de-referidos-UGLYCASH-UGLYCASH-720p-h2.gif" alt="" class="bg-gif">
-                        <img src="https://i.postimg.cc/MTttr6QF/Tutorial-de-c-mo-acceder-a-tu-c-digo-de-referido-UGLYCASH-UGLYCASH-720p-h264.gif" alt="" class="bg-gif">
-                        <img src="https://i.postimg.cc/7hW9wKX1/Tutorial-de-c-mo-ganar-el-1-anual-del-balance-de-tus-amigos-UGLYCASH-UGLYCASH-720p-h264.gif" alt="" class="bg-gif">
+                        <div class="gif-wrapper rgb-glitch">
+                            <img src="https://i.postimg.cc/1RCJGzPg/Gana-el-1-sobre-el-balance-de-tus-amigos-con-el-programa-de-referidos-UGLYCASH-UGLYCASH-720p-h2.gif" alt="Gráfico de ganancias por referidos UglyCash" class="bg-gif">
+                        </div>
+                        <div class="gif-wrapper rgb-glitch">
+                            <img src="https://i.postimg.cc/MTttr6QF/Tutorial-de-c-mo-acceder-a-tu-c-digo-de-referido-UGLYCASH-UGLYCASH-720p-h264.gif" alt="Tutorial de código de referido UglyCash" class="bg-gif">
+                        </div>
+                        <div class="gif-wrapper rgb-glitch">
+                            <img src="https://i.postimg.cc/7hW9wKX1/Tutorial-de-c-mo-ganar-el-1-anual-del-balance-de-tus-amigos-UGLYCASH-UGLYCASH-720p-h264.gif" alt="Tutorial de ganancias anuales por balance de amigos" class="bg-gif">
+                        </div>
                     </div>
                 </div>
                 <!-- Lane 2 -->
                 <div class="video-lane">
                     <div class="carousel-inner">
-                        <img src="https://i.postimg.cc/W452NrLp/1-A-O-EN-WISE-VS-1-A-O-EN-UGLYCASH-UGLYCASH-720p-h264.gif" alt="" class="bg-gif">
-                        <img src="https://i.postimg.cc/Y2DwygQM/POR-QU-SIGUES-QUERIENDO-ENTRAR-EN-WISE-UGLYCASH-UGLYCASH-720p-h264.gif" alt="" class="bg-gif">
-                        <img src="https://i.postimg.cc/htTWj56t/3-MOMENTOS-EN-LOS-QUE-NECESITAS-UGLYCASH-Y-NO-PAYONEER-UGLYCASH-720p-h264.gif" alt="" class="bg-gif">
-                        <!-- Duplicates for seamless loop -->
-                        <img src="https://i.postimg.cc/W452NrLp/1-A-O-EN-WISE-VS-1-A-O-EN-UGLYCASH-UGLYCASH-720p-h264.gif" alt="" class="bg-gif">
-                        <img src="https://i.postimg.cc/Y2DwygQM/POR-QU-SIGUES-QUERIENDO-ENTRAR-EN-WISE-UGLYCASH-UGLYCASH-720p-h264.gif" alt="" class="bg-gif">
-                        <img src="https://i.postimg.cc/htTWj56t/3-MOMENTOS-EN-LOS-QUE-NECESITAS-UGLYCASH-Y-NO-PAYONEER-UGLYCASH-720p-h264.gif" alt="" class="bg-gif">
+                        <div class="gif-wrapper rgb-glitch">
+                            <img src="https://i.postimg.cc/W452NrLp/1-A-O-EN-WISE-VS-1-A-O-EN-UGLYCASH-UGLYCASH-720p-h264.gif" alt="Comparación de ganancias Wise vs UglyCash" class="bg-gif">
+                        </div>
+                        <div class="gif-wrapper rgb-glitch">
+                            <img src="https://i.postimg.cc/Y2DwygQM/POR-QU-SIGUES-QUERIENDO-ENTRAR-EN-WISE-UGLYCASH-UGLYCASH-720p-h264.gif" alt="Video explicando por qué usar UglyCash en lugar de Wise" class="bg-gif">
+                        </div>
+                        <div class="gif-wrapper rgb-glitch">
+                            <img src="https://i.postimg.cc/htTWj56t/3-MOMENTOS-EN-LOS-QUE-NECESITAS-UGLYCASH-Y-NO-PAYONEER-UGLYCASH-720p-h264.gif" alt="Momentos en los que UglyCash es mejor que Payoneer" class="bg-gif">
+                        </div>
                     </div>
                 </div>
                 <!-- Lane 3 -->
                 <div class="video-lane">
                     <div class="carousel-inner">
-                        <img src="https://i.postimg.cc/kgvCsHch/C-MO-PUEDES-MANEJAR-TU-DINERO-EN-PAYPAL-UGLYCASH-UGLYCASH-720p-h264.gif" alt="" class="bg-gif">
-                        <img src="https://i.postimg.cc/g0MWF61V/PAYPAL-VS-UGLY-CASH-RENDIMIENTOS-UGLYCASH-720p-h264.gif" alt="" class="bg-gif">
-                        <img src="https://i.postimg.cc/sgsdMcrP/POR-QU-UGLYCASH-ES-LA-MEJOR-MANERA-DE-SACAR-LOS-BALANCES-QUE-TIENES-EN-PAYPAL-UGLYCASH-720p-h2.gif" alt="" class="bg-gif">
-                        <!-- Duplicates for seamless loop -->
-                        <img src="https://i.postimg.cc/kgvCsHch/C-MO-PUEDES-MANEJAR-TU-DINERO-EN-PAYPAL-UGLYCASH-UGLYCASH-720p-h264.gif" alt="" class="bg-gif">
-                        <img src="https://i.postimg.cc/g0MWF61V/PAYPAL-VS-UGLY-CASH-RENDIMIENTOS-UGLYCASH-720p-h264.gif" alt="" class="bg-gif">
-                        <img src="https://i.postimg.cc/sgsdMcrP/POR-QU-UGLYCASH-ES-LA-MEJOR-MANERA-DE-SACAR-LOS-BALANCES-QUE-TIENES-EN-PAYPAL-UGLYCASH-720p-h2.gif" alt="" class="bg-gif">
+                        <div class="gif-wrapper rgb-glitch">
+                            <img src="https://i.postimg.cc/kgvCsHch/C-MO-PUEDES-MANEJAR-TU-DINERO-EN-PAYPAL-UGLYCASH-UGLYCASH-720p-h264.gif" alt="Tutorial de cómo manejar dinero en PayPal con UglyCash" class="bg-gif">
+                        </div>
+                        <div class="gif-wrapper rgb-glitch">
+                            <img src="https://i.postimg.cc/g0MWF61V/PAYPAL-VS-UGLY-CASH-RENDIMIENTOS-UGLYCASH-720p-h264.gif" alt="Comparación de rendimientos PayPal vs UglyCash" class="bg-gif">
+                        </div>
+                        <div class="gif-wrapper rgb-glitch">
+                            <img src="https://i.postimg.cc/sgsdMcrP/POR-QU-UGLYCASH-ES-LA-MEJOR-MANERA-DE-SACAR-LOS-BALANCES-QUE-TIENES-EN-PAYPAL-UGLYCASH-720p-h2.gif" alt="Ventajas de usar UglyCash para retirar balances de PayPal" class="bg-gif">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1062,7 +1132,7 @@
                 Descubre lo que hace único a UglyCash
             </p>
             <!-- New 'Cómo Empezar' button in the Features section (moved here) -->
-            <button class="btn nav-link" data-page="howToStart" style="margin-bottom: 50px;">Cómo Empezar</button>
+            <button class="btn nav-link" data-page="howToStart" style="margin-bottom: 30px;">Cómo Empezar</button>
             
             <div class="card-container">
                 <div class="cards-wrapper" id="cardsWrapper">
@@ -1114,7 +1184,7 @@
                                     <p>Apple</p>
                                 </div>
                                 <div class="icon-item">
-                                    <img src="https://i.postimg.cc/hGCRVBGK/amazon-512.png" alt="" style="height: 2rem; width: auto; object-fit: contain;">
+                                    <img src="https://i.postimg.cc/hGCRVBGK/amazon-512.png" alt="Logo de Amazon" style="height: 2rem; width: auto; object-fit: contain;">
                                     <p>Amazon</p>
                                 </div>
                                 <div class="icon-item">
@@ -1122,11 +1192,11 @@
                                     <p>Spotify</p>
                                 </div>
                                 <div class="icon-item">
-                                    <img src="https://i.postimg.cc/26X9SjSB/uber-logo-icon-144780.png" alt="" style="height: 2rem; width: auto; object-fit: contain;">
+                                    <img src="https://i.postimg.cc/26X9SjSB/uber-logo-icon-144780.png" alt="Logo de Uber" style="height: 2rem; width: auto; object-fit: contain;">
                                     <p>Uber</p>
                                 </div>
                                 <div class="icon-item">
-                                    <img src="https://i.postimg.cc/Y0KnWnQp/netflix-2-512.png" alt="" style="height: 2rem; width: auto; object-fit: contain;">
+                                    <img src="https://i.postimg.cc/Y0KnWnQp/netflix-2-512.png" alt="Logo de Netflix" style="height: 2rem; width: auto; object-fit: contain;">
                                     <p>Netflix</p>
                                 </div>
                                 <div class="icon-item">
@@ -1195,7 +1265,7 @@
         <!-- New Section: Not a Bank -->
         <section id="not-a-bank" class="not-a-bank-section">
             <div class="background-gif-container">
-                <img src="https://i.postimg.cc/Qx0GW7xR/We-are-not-a-bank-we-are-a-Stablecoin-App-UGLYCASH-UGLYCASH-720p-h264.gif" alt="" class="not-a-bank-bg-gif">
+                <img src="https://i.postimg.cc/Qx0GW7xR/We-are-not-a-bank-we-are-a-Stablecoin-App-UGLYCASH-UGLYCASH-720p-h264.gif" alt="Gráfico de fondo con texto 'No somos un banco'" class="not-a-bank-bg-gif">
                 <div class="overlay"></div>
             </div>
             <div class="content">
@@ -1241,7 +1311,7 @@
                 <h3>Paso 1: Depositar Fondos en UglyCash</h3>
                 <p>Solo necesitas abrir la aplicación en tu dispositivo móvil, ya sea Android o iOS. Desde la pantalla principal, accederás directamente a la sección de Wallet o Billetera. Una vez allí, simplemente pulsa el botón "Depositar" para comenzar el proceso.</p>
                 <p style="text-align: center; margin-top: 20px;">
-                    <img src="https://i.postimg.cc/FFGS7crM/IMG-0473.jpg" alt="" style="max-width: 100%; height: auto; border-radius: 8px;">
+                    <img src="https://i.postimg.cc/FFGS7crM/IMG-0473.jpg" alt="Pantalla de depósito de la aplicación UglyCash" style="max-width: 100%; height: auto; border-radius: 8px;">
                 </p>
             </div>
 
@@ -1258,7 +1328,7 @@
                 </ul>
                 <p>Para los fines de esta guía, utilizaremos el método mediante stablecoins (USDC, USDT, eUSD, etc.), ya que suele ser una de las alternativas más accesibles, rápidas y económicas, dependiendo de la moneda y red seleccionada.</p>
                 <p style="text-align: center; margin-top: 20px;">
-                    <img src="https://i.postimg.cc/hjDjBydf/IMG-0474.jpg" alt="" style="max-width: 100%; height: auto; border-radius: 8px;">
+                    <img src="https://i.postimg.cc/hjDjBydf/IMG-0474.jpg" alt="Pantalla de métodos de depósito de UglyCash" style="max-width: 100%; height: auto; border-radius: 8px;">
                 </p>
             </div>
 
@@ -1267,7 +1337,7 @@
                 <p>En este paso, podrás seleccionar la moneda con la que deseas realizar el depósito. Las opciones disponibles en la aplicación incluyen: DAI, eUSD, hyUSD, USDT, USD3, USDC. Sin embargo, es importante tener en cuenta que Coinpay solo es compatible con tres de estas monedas: DAI, USDT y USDC.</p>
                 <p>Para fines didácticos, en esta guía utilizaremos DAI. ¿Por qué elegimos esta moneda? Lo explicaremos en el siguiente paso.</p>
                 <p style="text-align: center; margin-top: 20px;">
-                    <img src="https://i.postimg.cc/NFLjyKbt/IMG-0475.jpg" alt="" style="max-width: 100%; height: auto; border-radius: 8px;">
+                    <img src="https://i.postimg.cc/NFLjyKbt/IMG-0475.jpg" alt="Pantalla de selección de moneda en Coinpay" style="max-width: 100%; height: auto; border-radius: 8px;">
                 </p>
             </div>
 
@@ -1277,7 +1347,7 @@
                 <p>Esta ventaja convierte a DAI en una de las opciones más económicas y convenientes para fondear tu billetera de UglyCash.</p>
                 <p>En comparación, las comisiones para transferencias con USDT y USDC en Coinpay oscilan entre 3.5 y 7.5 unidades, dependiendo de la red, lo que puede incrementar significativamente el costo de la operación.</p>
                 <p style="text-align: center; margin-top: 20px;">
-                    <img src="https://i.postimg.cc/661Qkh5p/IMG-0476.jpg" alt="" style="max-width: 100%; height: auto; border-radius: 8px;">
+                    <img src="https://i.postimg.cc/661Qkh5p/IMG-0476.jpg" alt="Pantalla de selección de red en Coinpay" style="max-width: 100%; height: auto; border-radius: 8px;">
                 </p>
             </div>
 
@@ -1287,7 +1357,7 @@
                 <p>En este paso, la aplicación de UglyCash generará una dirección única para tu billetera. Es fundamental asegurarte de enviar los fondos usando la misma moneda y red seleccionadas previamente. Por ejemplo, si elegiste DAI en la red Polygon, debes enviar exactamente DAI a través de Polygon.</p>
                 <p><strong>Importante:</strong> Si envías otra moneda o utilizas una red diferente, los fondos podrían perderse y no podrán recuperarse. Asegúrate de verificar bien los datos antes de realizar la transferencia. El éxito de la operación depende de que la información sea correcta.</p>
                 <p style="text-align: center; margin-top: 20px;">
-                    <img src="https://i.postimg.cc/gkX0m6nq/IMG-0477.jpg" alt="" style="max-width: 100%; height: auto; border-radius: 8px;">
+                    <img src="https://i.postimg.cc/gkX0m6nq/IMG-0477.jpg" alt="Pantalla de dirección de billetera UglyCash" style="max-width: 100%; height: auto; border-radius: 8px;">
                 </p>
             </div>
 
@@ -1295,7 +1365,7 @@
                 <h3>Paso 6: Registrarse en Coinpay (Si aún no tienes cuenta)</h3>
                 <p>En esta guía utilizaremos Coinpay como plataforma principal por varias razones de peso: es una plataforma desarrollada en Costa Rica, lo que facilita su uso a nivel local; permite realizar depósitos mediante transferencia bancaria o SINPE Móvil si se opera en colones costarricenses; también ofrece la opción de transferencias bancarias en dólares. Si aún no tienes una cuenta en Coinpay, puedes crear una fácilmente siguiendo los pasos de registro y verificación.</p>
                 <p style="text-align: center; margin-top: 20px;">
-                    <img src="https://i.postimg.cc/pryWmBMX/image.png" alt="" style="max-width: 100%; height: auto; border-radius: 8px;">
+                    <img src="https://i.postimg.cc/pryWmBMX/image.png" alt="Pantalla de registro de Coinpay" style="max-width: 100%; height: auto; border-radius: 8px;">
                 </p>
             </div>
 
@@ -1304,7 +1374,7 @@
                 <p>Una vez que tu registro haya sido aprobado y tu cuenta verificada, podrás operar con total libertad dentro de la plataforma de Coinpay. El siguiente paso es familiarizarte con el entorno de la aplicación. No te preocupes, esta guía te acompañará paso a paso para que sepas exactamente qué hacer.</p>
                 <p>En el panel lateral izquierdo encontrarás varias secciones: Inicio, Billetera, Tarjeta y Comercios. Para los fines de esta guía, nos enfocaremos únicamente en la sección de "Billetera", ya que es ahí donde se encuentran todas las monedas disponibles en la plataforma y desde donde podrás gestionarlas de forma sencilla.</p>
                 <p style="text-align: center; margin-top: 20px;">
-                    <img src="https://i.postimg.cc/4yrgmk1B/image.png" alt="" style="max-width: 100%; height: auto; border-radius: 8px;">
+                    <img src="https://i.postimg.cc/4yrgmk1B/image.png" alt="Pantalla de billetera de Coinpay" style="max-width: 100%; height: auto; border-radius: 8px;">
                 </p>
             </div>
 
@@ -1312,7 +1382,7 @@
                 <h3>Paso 8: Métodos para Agregar Fondos a Coinpay (vía SINPE Móvil)</h3>
                 <p>Dentro de la sección Billetera, podrás ver el listado completo de monedas disponibles. Para los fines de esta guía, nos enfocaremos en el colón costarricense (CRC). Puedes ubicar la moneda de dos formas: desplazándote manualmente por el catálogo o utilizando el buscador interno (escribe “CRC”). Si haces clic en el símbolo de estrella, la agregarás a favoritos. Una vez seleccionada CRC, haz clic en "Recibir". Al hacerlo, se te solicitará seleccionar tu país, y a continuación se mostrarán tres opciones disponibles para agregar dinero: transferencia bancaria, SINPE Móvil y notificación manual.</p>
                 <p style="text-align: center; margin-top: 20px;">
-                    <img src="https://i.postimg.cc/VsT17ncn/image.png" alt="" style="max-width: 100%; height: auto; border-radius: 8px;">
+                    <img src="https://i.postimg.cc/VsT17ncn/image.png" alt="Pantalla de opciones para recibir fondos en Coinpay" style="max-width: 100%; height: auto; border-radius: 8px;">
                 </p>
             </div>
 
@@ -1321,7 +1391,7 @@
                 <p>En el paso anterior, seleccionamos SINPE Móvil como el método predeterminado para recargar fondos en Coinpay. A continuación, la plataforma te proporcionará un número telefónico al cual deberás realizar la transferencia, junto con un código único (por ejemplo: CR1050464) que deberás ingresar en el campo de detalle o descripción al momento de hacer el envío por SINPE Móvil. Este código es generado de forma aleatoria para identificar tu transacción, por lo que es muy importante ingresarlo exactamente como se muestra.</p>
                 <p>Además, Coinpay te indicará a nombre de quién está registrada la cuenta receptora, así como las instrucciones específicas que debes seguir. Si cumples con todos los pasos indicados, la acreditación de los fondos se realizará sin inconvenientes.</p>
                 <p style="text-align: center; margin-top: 20px;">
-                    <img src="https://i.postimg.cc/tTsRT5jR/image.png" alt="" style="max-width: 100%; height: auto; border-radius: 8px;">
+                    <img src="https://i.postimg.cc/tTsRT5jR/image.png" alt="Pantalla de instrucciones de SINPE Móvil en Coinpay" style="max-width: 100%; height: auto; border-radius: 8px;">
                 </p>
             </div>
 
@@ -1330,7 +1400,7 @@
                 <p>Una vez que hayas realizado la transferencia mediante SINPE Móvil desde la entidad bancaria de tu preferencia y siguiendo cuidadosamente las instrucciones proporcionadas por la plataforma de Coinpay, la confirmación de los fondos se reflejará en cuestión de segundos.</p>
                 <p>En este ejemplo, hemos depositado ₡5.000. En la parte derecha de la pantalla podrás ver la confirmación y acreditación exitosa del monto transferido. Asimismo, en el panel central, dentro del espacio correspondiente a la moneda CRC, se mostrará el monto en colones junto con su equivalente en dólares, permitiéndote llevar un mejor control de tus fondos.</p>
                 <p style="text-align: center; margin-top: 20px;">
-                    <img src="https://i.postimg.cc/DykfvLYF/image.png" alt="" style="max-width: 100%; height: auto; border-radius: 8px;">
+                    <img src="https://i.postimg.cc/DykfvLYF/image.png" alt="Pantalla de confirmación de transferencia en Coinpay" style="max-width: 100%; height: auto; border-radius: 8px;">
                 </p>
             </div>
 
@@ -1339,7 +1409,7 @@
                 <p>Así como en el paso 7 localizaste la moneda CRC, ahora deberás buscar y seleccionar la criptomoneda DAI desde el mismo apartado de Billetera. Una vez que hayas seleccionado DAI, se habilitará un panel en el lado derecho de la pantalla. Allí, haz clic en el botón "Comprar". En la siguiente ventana, selecciona "Balance" como método de pago para completar la conversión utilizando tus fondos disponibles en CRC.</p>
                 <p>Este proceso te permitirá adquirir DAI de forma sencilla y segura, aprovechando el saldo que ya tienes acreditado en tu cuenta colones.</p>
                 <p style="text-align: center; margin-top: 20px;">
-                    <img src="https://i.postimg.cc/3wRYSBWj/image.png" alt="" style="max-width: 100%; height: auto; border-radius: 8px;">
+                    <img src="https://i.postimg.cc/3wRYSBWj/image.png" alt="Pantalla de conversión de fondos en Coinpay" style="max-width: 100%; height: auto; border-radius: 8px;">
                 </p>
             </div>
 
@@ -1348,7 +1418,7 @@
                 <p>Después de presionar el botón "Comprar" y seleccionar "Balance" como método de pago, podrás decidir si deseas convertir la totalidad de tu saldo en CRC o solo una parte. Esta elección queda completamente a tu criterio, brindándote flexibilidad según tus necesidades.</p>
                 <p>Una vez ingresado el monto deseado, simplemente confirma la transacción. Al completarse el proceso, recibirás una notificación de compra exitosa. En este ejemplo, se ha convertido un total de ₡5.000 colones a la moneda DAI, lo cual equivale a aproximadamente $9.33080000. Además, si utilizaste la totalidad de tu saldo en CRC, verás que dicho balance aparecerá ahora en cero en el apartado de monedas, mientras que el nuevo saldo en DAI estará reflejado de forma clara.</p>
                 <p style="text-align: center; margin-top: 20px;">
-                    <img src="https://i.postimg.cc/NMXhSPtX/image.png" alt="" style="max-width: 100%; height: auto; border-radius: 8px;">
+                    <img src="https://i.postimg.cc/NMXhSPtX/image.png" alt="Pantalla de confirmación de compra de DAI en Coinpay" style="max-width: 100%; height: auto; border-radius: 8px;">
                 </p>
             </div>
 
@@ -1357,7 +1427,7 @@
                 <p>Una vez que ya cuentas con DAI disponibles en tu cuenta de Coinpay, el siguiente paso será transferirlos a UglyCash. Para ello, dirígete a la sección de la moneda DAI y haz clic en el botón "Enviar". A continuación, selecciona la opción "Billetera externa". En esta sección, deberás elegir la red de envío; para efectos de esta guía, utilizaremos la red Polygon.</p>
                 <p>Luego, deberás ingresar la dirección de tu billetera en UglyCash. Esta dirección fue generada previamente en el Paso 5, específicamente para la red Polygon y la moneda DAI. Es muy importante que copies y pegues exactamente esta dirección en el campo correspondiente en Coinpay. Evita escribirla manualmente, ya que un error en un solo carácter puede hacer que los fondos se pierdan. Al copiar y pegar, asegúrate de verificar que la dirección coincida perfectamente antes de continuar.</p>
                 <p style="text-align: center; margin-top: 20px;">
-                    <img src="https://i.postimg.cc/c44985zc/image.png" alt="" style="max-width: 100%; height: auto; border-radius: 8px;">
+                    <img src="https://i.postimg.cc/c44985zc/image.png" alt="Pantalla de transferencia de DAI desde Coinpay" style="max-width: 100%; height: auto; border-radius: 8px;">
                 </p>
             </div>
 
@@ -1367,9 +1437,9 @@
             <p>En este punto, disponemos de $9.33080000 DAI en la cuenta de Coinpay. Antes de realizar la transferencia, debemos considerar el costo por transacción o fee de red, que en este caso es de apenas 0.00400000 DAI. Por lo tanto, podrás transferir un total de $9.3268 DAI a UglyCash.</p>
             <p>Una vez verificada toda la información (moneda, red, dirección y monto), presiona el botón "Continuar". Se abrirá una nueva ventana de confirmación donde, si lo deseas, puedes agregar una breve descripción o detalle de la transferencia. Para finalizar, haz clic nuevamente en "Continuar" o "Transferir" para completar el envío. En este momento, los fondos han sido enviados a UglyCash. Solo resta esperar unos segundos hasta recibir la notificación de acreditación, confirmando que los DAI han sido correctamente recibidos en tu cuenta de UglyCash.</p>
                 <div class="multiple-images">
-                    <img src="https://i.postimg.cc/HnW2XV6L/image.png" alt="" style="max-width: 100%; height: auto; border-radius: 8px;">
-                    <img src="https://i.postimg.cc/NfMD02yJ/image.png" alt="" style="max-width: 100%; height: auto; border-radius: 8px;">
-                    <img src="https://i.postimg.cc/g2LKV9H3/image.png" alt="" style="max-width: 100%; height: auto; border-radius: 8px;">
+                    <img src="https://i.postimg.cc/HnW2XV6L/image.png" alt="Captura de pantalla de confirmación de transferencia 1" style="max-width: 100%; height: auto; border-radius: 8px;">
+                    <img src="https://i.postimg.cc/NfMD02yJ/image.png" alt="Captura de pantalla de confirmación de transferencia 2" style="max-width: 100%; height: auto; border-radius: 8px;">
+                    <img src="https://i.postimg.cc/g2LKV9H3/image.png" alt="Notificación de fondos recibidos en UglyCash" style="max-width: 100%; height: auto; border-radius: 8px;">
                 </div>
             </div>
 
@@ -1565,6 +1635,39 @@
                 dynamicAcceptanceList.appendChild(ul);
             }
 
+            // GIF Carousel Logic
+            const videoLanes = document.querySelectorAll('.video-lane');
+            const gifData = []; // Store gif-wrappers for each lane
+            videoLanes.forEach(lane => {
+                gifData.push(Array.from(lane.querySelectorAll('.gif-wrapper')));
+            });
+
+            const currentGifIndices = Array(videoLanes.length).fill(0); // Track current GIF for each lane
+            const gifDisplayDuration = 5000; // 5 seconds per GIF
+            const effectDuration = 1500; // 1.5 seconds for effects
+
+            function showNextGif() {
+                gifData.forEach((wrappers, laneIndex) => {
+                    // Hide all wrappers in the current lane
+                    wrappers.forEach(wrapper => {
+                        wrapper.classList.remove('active', 'glitch-effect', 'flicker-effect', 'speed-effect-class');
+                    });
+
+                    // Move to the next GIF
+                    currentGifIndices[laneIndex] = (currentGifIndices[laneIndex] + 1) % wrappers.length;
+                    const nextGifWrapper = wrappers[currentGifIndices[laneIndex]];
+
+                    // Show the next GIF
+                    nextGifWrapper.classList.add('active');
+
+                    // Apply effects temporarily
+                    nextGifWrapper.classList.add('glitch-effect', 'flicker-effect', 'speed-effect-class');
+                    setTimeout(() => {
+                        nextGifWrapper.classList.remove('glitch-effect', 'flicker-effect', 'speed-effect-class');
+                    }, effectDuration);
+                });
+            }
+
             function showPage(pageId) {
                 // Hide all pages first
                 pages.forEach(page => {
@@ -1583,27 +1686,21 @@
                         renderAcceptanceList(acceptanceData); 
                     }
                     
-                    // If navigating to home page, re-initialize carousel and force GIF animation restart
+                    // If navigating to home page, re-initialize carousel and GIF animation
                     if (pageId === 'homePage') {
-                        setTimeout(() => {
-                            setCardWidthAndMoveCarousel(currentIndex);
-                            
-                            // Attempt to restart GIF animations for smoothness
-                            const videoLanes = targetPage.querySelectorAll('.video-lane .carousel-inner');
-                            videoLanes.forEach(lane => {
-                                lane.style.animation = 'none'; // Temporarily pause/reset animation
-                                // Trigger reflow to ensure the 'none' takes effect before re-applying
-                                void lane.offsetWidth; 
-                                lane.style.animation = null; // Re-apply original animation defined in CSS
-                                // Also re-apply individual lane delays, as null might reset them
-                                if (lane.parentElement.classList.contains('video-lane')) {
-                                    if (lane.parentElement.matches(':nth-child(1)')) lane.style.animationDelay = '0s';
-                                    else if (lane.parentElement.matches(':nth-child(2)')) lane.style.animationDelay = '-5s';
-                                    else if (lane.parentElement.matches(':nth-child(3)')) lane.style.animationDelay = '-10s';
-                                }
+                        // Reset GIF indices and show first GIFs
+                        gifData.forEach((wrappers, laneIndex) => {
+                            wrappers.forEach(wrapper => {
+                                wrapper.classList.remove('active', 'glitch-effect', 'flicker-effect', 'speed-effect-class');
                             });
-
-                        }, 50); // Small delay to ensure display:block takes effect
+                            currentGifIndices[laneIndex] = 0;
+                            wrappers[0].classList.add('active');
+                            // Apply initial effects
+                            wrappers[0].classList.add('glitch-effect', 'flicker-effect', 'speed-effect-class');
+                            setTimeout(() => {
+                                wrappers[0].classList.remove('glitch-effect', 'flicker-effect', 'speed-effect-class');
+                            }, effectDuration);
+                        });
                     }
                 }
             }
@@ -1628,6 +1725,9 @@
             // and ensure the home page is shown initially.
             setCardWidthAndMoveCarousel(0);
             showPage('homePage'); // Ensure home page is visible on initial load
+
+            // Start GIF animation only if on home page
+            let gifInterval = setInterval(showNextGif, gifDisplayDuration);
 
             // Recalculate position and card widths on window resize to ensure responsiveness
             window.addEventListener('resize', () => {
