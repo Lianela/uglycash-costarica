@@ -181,7 +181,6 @@
             position: relative; /* Changed from flex to relative for absolute positioning of wrappers */
             width: 100%;
             height: 100%;
-            /* Removed animation: slideUpCarousel */
         }
 
         .gif-wrapper { /* New wrapper for each GIF */
@@ -190,11 +189,12 @@
             left: 0;
             width: 100%;
             height: 100%;
-            opacity: 0;
-            transition: opacity 1s ease-in-out; /* Smooth fade transition */
+            opacity: 0; /* Initially hidden */
+            transition: opacity 0.5s ease-in-out; /* Smooth fade transition */
             display: flex; /* To center the image within the wrapper if needed */
             justify-content: center;
             align-items: center;
+            overflow: hidden; /* Important for the slide effect */
         }
 
         .gif-wrapper.active {
@@ -278,12 +278,12 @@
             text-align: center;
             color: var(--text-light);
             max-width: 700px;
-            margin: 0 auto 15px; /* Adjusted margin-bottom for button placement */
+            margin: 0 auto 10px; /* Adjusted margin-bottom for button placement */
         }
 
         /* Style for the "Cómo Empezar" button in Features section */
         .features-section .btn.nav-link[data-page="howToStart"] {
-            margin-bottom: 30px; /* Adjusted padding */
+            margin-bottom: 20px; /* Adjusted padding */
         }
         
         /* Page Content Containers */
@@ -397,7 +397,7 @@
             display: flex;
             justify-content: center;
             gap: 20px;
-            margin-top: 20px; /* Adjusted margin */
+            margin-top: 15px; /* Adjusted margin to be closer to cards */
         }
         
         .nav-btn {
@@ -424,7 +424,7 @@
             display: flex;
             justify-content: center;
             gap: 12px;
-            margin-top: 15px; /* Adjusted margin */
+            margin-top: 10px; /* Adjusted margin to be closer to buttons */
         }
         
         .indicator {
@@ -546,72 +546,6 @@
             line-height: 1.7;
             margin-bottom: 10px;
         }
-
-        /* 🌈 RGB Split */
-        .rgb-glitch {
-            position: relative;
-        }
-
-        .rgb-glitch::before,
-        .rgb-glitch::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            /* Using background-image from the actual img src for pseudo-elements */
-            background-size: cover;
-            background-position: center;
-            mix-blend-mode: screen;
-            pointer-events: none;
-            opacity: 0.5;
-            transition: transform 0.5s ease, filter 0.5s ease; /* Smooth transition for effects */
-        }
-
-        .rgb-glitch::before {
-            transform: translate(2px, 0);
-            filter: brightness(1.2) contrast(1.2) sepia(1) hue-rotate(180deg);
-        }
-
-        .rgb-glitch::after {
-            transform: translate(-2px, 0);
-            filter: brightness(1.2) contrast(1.2) sepia(1) hue-rotate(300deg);
-        }
-
-        /* ⚡ Glitch Move */
-        .glitch-effect {
-            animation: glitchMove 1s infinite;
-        }
-
-        @keyframes glitchMove {
-            0%, 100% { transform: translate(0, 0); }
-            20% { transform: translate(-2px, 2px); }
-            40% { transform: translate(2px, -2px); }
-            60% { transform: translate(-1px, 1px); }
-            80% { transform: translate(1px, -1px); }
-        }
-
-        /* 🔥 Flicker */
-        .flicker-effect {
-            animation: flickerAnimation 1.2s infinite;
-        }
-
-        @keyframes flickerAnimation {
-            0%, 100% { opacity: 1; }
-            10% { opacity: 0.9; }
-            20% { opacity: 0.95; }
-            30% { opacity: 0.7; }
-            40% { opacity: 0.85; }
-            50% { opacity: 0.6; }
-            60% { opacity: 0.9; }
-            70% { opacity: 0.75; }
-            80% { opacity: 0.95; }
-            90% { opacity: 0.8; }
-        }
-
-        /* 🚀 Speed Skew */
-        .speed-effect-class {
-            transform: skewX(-4deg) scale(1.02);
-            filter: blur(1px) brightness(1.15) saturate(1.2);
-        }
         
         /* Responsive Design */
         @media (max-width: 1200px) {
@@ -662,7 +596,6 @@
             .video-lane:nth-child(n+2) { /* Hide 2nd, 3rd, etc. lanes */
                 display: none;
             }
-            /* No animation delay needed for single lane */
 
             .hero-title {
                 font-size: 2.8rem;
@@ -799,7 +732,7 @@
                 /* overflow-x: auto; Removed to allow wrapping and proper centering */
                 gap: 10px;
                 padding-bottom: 8px;
-                margin: 1.5rem auto 0.5rem; /* Added top margin, adjusted bottom margin */
+                margin: 1rem auto 0.5rem; /* Adjusted top margin, reduced bottom margin */
                 width: 100%;
                 justify-content: center;
             }
@@ -1067,13 +1000,13 @@
                 <!-- Lane 1 -->
                 <div class="video-lane">
                     <div class="carousel-inner">
-                        <div class="gif-wrapper rgb-glitch">
+                        <div class="gif-wrapper">
                             <img src="https://i.postimg.cc/1RCJGzPg/Gana-el-1-sobre-el-balance-de-tus-amigos-con-el-programa-de-referidos-UGLYCASH-UGLYCASH-720p-h2.gif" alt="Gráfico de ganancias por referidos UglyCash" class="bg-gif">
                         </div>
-                        <div class="gif-wrapper rgb-glitch">
+                        <div class="gif-wrapper">
                             <img src="https://i.postimg.cc/MTttr6QF/Tutorial-de-c-mo-acceder-a-tu-c-digo-de-referido-UGLYCASH-UGLYCASH-720p-h264.gif" alt="Tutorial de código de referido UglyCash" class="bg-gif">
                         </div>
-                        <div class="gif-wrapper rgb-glitch">
+                        <div class="gif-wrapper">
                             <img src="https://i.postimg.cc/7hW9wKX1/Tutorial-de-c-mo-ganar-el-1-anual-del-balance-de-tus-amigos-UGLYCASH-UGLYCASH-720p-h264.gif" alt="Tutorial de ganancias anuales por balance de amigos" class="bg-gif">
                         </div>
                     </div>
@@ -1081,13 +1014,13 @@
                 <!-- Lane 2 -->
                 <div class="video-lane">
                     <div class="carousel-inner">
-                        <div class="gif-wrapper rgb-glitch">
+                        <div class="gif-wrapper">
                             <img src="https://i.postimg.cc/W452NrLp/1-A-O-EN-WISE-VS-1-A-O-EN-UGLYCASH-UGLYCASH-720p-h264.gif" alt="Comparación de ganancias Wise vs UglyCash" class="bg-gif">
                         </div>
-                        <div class="gif-wrapper rgb-glitch">
+                        <div class="gif-wrapper">
                             <img src="https://i.postimg.cc/Y2DwygQM/POR-QU-SIGUES-QUERIENDO-ENTRAR-EN-WISE-UGLYCASH-UGLYCASH-720p-h264.gif" alt="Video explicando por qué usar UglyCash en lugar de Wise" class="bg-gif">
                         </div>
-                        <div class="gif-wrapper rgb-glitch">
+                        <div class="gif-wrapper">
                             <img src="https://i.postimg.cc/htTWj56t/3-MOMENTOS-EN-LOS-QUE-NECESITAS-UGLYCASH-Y-NO-PAYONEER-UGLYCASH-720p-h264.gif" alt="Momentos en los que UglyCash es mejor que Payoneer" class="bg-gif">
                         </div>
                     </div>
@@ -1095,13 +1028,13 @@
                 <!-- Lane 3 -->
                 <div class="video-lane">
                     <div class="carousel-inner">
-                        <div class="gif-wrapper rgb-glitch">
+                        <div class="gif-wrapper">
                             <img src="https://i.postimg.cc/kgvCsHch/C-MO-PUEDES-MANEJAR-TU-DINERO-EN-PAYPAL-UGLYCASH-UGLYCASH-720p-h264.gif" alt="Tutorial de cómo manejar dinero en PayPal con UglyCash" class="bg-gif">
                         </div>
-                        <div class="gif-wrapper rgb-glitch">
+                        <div class="gif-wrapper">
                             <img src="https://i.postimg.cc/g0MWF61V/PAYPAL-VS-UGLY-CASH-RENDIMIENTOS-UGLYCASH-720p-h264.gif" alt="Comparación de rendimientos PayPal vs UglyCash" class="bg-gif">
                         </div>
-                        <div class="gif-wrapper rgb-glitch">
+                        <div class="gif-wrapper">
                             <img src="https://i.postimg.cc/sgsdMcrP/POR-QU-UGLYCASH-ES-LA-MEJOR-MANERA-DE-SACAR-LOS-BALANCES-QUE-TIENES-EN-PAYPAL-UGLYCASH-720p-h2.gif" alt="Ventajas de usar UglyCash para retirar balances de PayPal" class="bg-gif">
                         </div>
                     </div>
@@ -1132,7 +1065,7 @@
                 Descubre lo que hace único a UglyCash
             </p>
             <!-- New 'Cómo Empezar' button in the Features section (moved here) -->
-            <button class="btn nav-link" data-page="howToStart" style="margin-bottom: 30px;">Cómo Empezar</button>
+            <button class="btn nav-link" data-page="howToStart" style="margin-bottom: 20px;">Cómo Empezar</button>
             
             <div class="card-container">
                 <div class="cards-wrapper" id="cardsWrapper">
@@ -1644,27 +1577,21 @@
 
             const currentGifIndices = Array(videoLanes.length).fill(0); // Track current GIF for each lane
             const gifDisplayDuration = 5000; // 5 seconds per GIF
-            const effectDuration = 1500; // 1.5 seconds for effects
 
             function showNextGif() {
                 gifData.forEach((wrappers, laneIndex) => {
-                    // Hide all wrappers in the current lane
-                    wrappers.forEach(wrapper => {
-                        wrapper.classList.remove('active', 'glitch-effect', 'flicker-effect', 'speed-effect-class');
-                    });
+                    const currentActiveWrapper = wrappers[currentGifIndices[laneIndex]];
+                    
+                    if (currentActiveWrapper) {
+                        currentActiveWrapper.classList.remove('active');
+                    }
 
                     // Move to the next GIF
                     currentGifIndices[laneIndex] = (currentGifIndices[laneIndex] + 1) % wrappers.length;
                     const nextGifWrapper = wrappers[currentGifIndices[laneIndex]];
 
-                    // Show the next GIF
+                    // Activate the next GIF
                     nextGifWrapper.classList.add('active');
-
-                    // Apply effects temporarily
-                    nextGifWrapper.classList.add('glitch-effect', 'flicker-effect', 'speed-effect-class');
-                    setTimeout(() => {
-                        nextGifWrapper.classList.remove('glitch-effect', 'flicker-effect', 'speed-effect-class');
-                    }, effectDuration);
                 });
             }
 
@@ -1691,15 +1618,13 @@
                         // Reset GIF indices and show first GIFs
                         gifData.forEach((wrappers, laneIndex) => {
                             wrappers.forEach(wrapper => {
-                                wrapper.classList.remove('active', 'glitch-effect', 'flicker-effect', 'speed-effect-class');
+                                wrapper.classList.remove('active');
                             });
                             currentGifIndices[laneIndex] = 0;
-                            wrappers[0].classList.add('active');
-                            // Apply initial effects
-                            wrappers[0].classList.add('glitch-effect', 'flicker-effect', 'speed-effect-class');
-                            setTimeout(() => {
-                                wrappers[0].classList.remove('glitch-effect', 'flicker-effect', 'speed-effect-class');
-                            }, effectDuration);
+                            const initialGifWrapper = wrappers[0];
+                            if (initialGifWrapper) {
+                                initialGifWrapper.classList.add('active');
+                            }
                         });
                     }
                 }
