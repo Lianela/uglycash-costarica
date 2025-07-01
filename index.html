@@ -620,7 +620,7 @@
             }
             
             .card {
-                min-height: 400px;
+                min-height: 300px; /* Further reduced min-height */
                 padding: 1.5rem;
             }
             
@@ -630,6 +630,20 @@
             
             .icon-grid {
                 grid-template-columns: repeat(2, 1fr); /* Always 2 columns for mobile */
+                gap: 10px; /* Slightly smaller gap */
+            }
+            .icon-item p {
+                display: none; /* Hide text below icons */
+            }
+            .icon-item:nth-child(n+3) { /* Hide icons from the 3rd one onwards */
+                display: none;
+            }
+            .icon-item {
+                padding: 10px; /* Reduced padding for icon items */
+            }
+            .icon-item i, .icon-item img {
+                font-size: 1.8rem; /* Slightly smaller icons */
+                margin-bottom: 5px; /* Reduced margin */
             }
             /* Not a Bank Section Responsive */
             .not-a-bank-section {
@@ -668,8 +682,8 @@
             }
             
             .card {
-                min-height: 350px; /* Reduced min-height for smaller screens */
-                padding: 1rem; /* Reduced padding for smaller screens */
+                min-height: 280px; /* Even smaller min-height for very small screens */
+                padding: 0.8rem; /* Even smaller padding */
             }
             .card h3 {
                 font-size: 1.6rem; /* Smaller font for card titles */
@@ -687,7 +701,10 @@
                 grid-template-columns: repeat(2, 1fr); /* Stays at 2 columns */
             }
             .icon-item p {
-                font-size: 0.85rem; /* Smaller font for icon item text */
+                display: none; /* Ensure text is hidden */
+            }
+            .icon-item i, .icon-item img {
+                font-size: 1.6rem;
             }
             
             .nav-btn {
