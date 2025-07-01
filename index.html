@@ -638,14 +638,11 @@
                 margin-bottom: 0.8rem; /* Reduce margin */
             }
 
-            .card-content > p:first-of-type { /* Target the first paragraph in card-content */
+            /* Main paragraph in card-content - removed line clamping */
+            .card-content > p:first-of-type { 
                 font-size: 1rem; /* Adjust font size */
                 line-height: 1.4; /* Make line height tighter */
-                display: -webkit-box;
-                -webkit-line-clamp: 3; /* Limit to 3 lines */
-                -webkit-box-orient: vertical;
-                overflow: hidden;
-                text-overflow: ellipsis;
+                /* Removed display: -webkit-box, -webkit-line-clamp, -webkit-box-orient, overflow, text-overflow */
                 margin: 0.5rem 0 1rem; /* Adjust margin for compactness */
             }
             
@@ -654,8 +651,12 @@
                 gap: 8px; /* Slightly smaller gap between icons */
                 margin: 1rem auto; /* Adjusted margin */
             }
+            /* Show text below icons */
             .icon-item p {
-                display: none; /* Hide text below icons */
+                display: block; /* Make text visible */
+                font-size: 0.8rem; /* Smaller font for icon text */
+                line-height: 1.2;
+                margin-top: 5px; /* Add a small margin above text */
             }
             .icon-item:nth-child(n+3) { /* Hide icons from the 3rd one onwards */
                 display: none;
@@ -665,7 +666,7 @@
             }
             .icon-item i, .icon-item img {
                 font-size: 1.6rem; /* Slightly smaller icons */
-                margin-bottom: 0; /* Remove bottom margin if text is hidden */
+                margin-bottom: 0; /* No bottom margin, text has its own top margin */
             }
 
             .card-content > p:last-of-type { /* Target the last paragraph in card-content */
@@ -736,7 +737,6 @@
             }
             .card-content > p:first-of-type {
                 font-size: 0.9rem; /* Even smaller font for card paragraphs */
-                -webkit-line-clamp: 3; /* Keep limit to 3 lines */
                 margin: 0.4rem 0 0.8rem;
             }
             
@@ -749,7 +749,7 @@
                 grid-template-columns: repeat(2, 1fr); /* Stays at 2 columns */
             }
             .icon-item p {
-                display: none; /* Ensure text is hidden */
+                font-size: 0.7rem; /* Even smaller font for icon text */
             }
             .icon-item i, .icon-item img {
                 font-size: 1.4rem;
