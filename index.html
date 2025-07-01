@@ -641,6 +641,16 @@
             .not-a-bank-section .section-subtitle {
                 font-size: 1.2rem;
             }
+
+            /* Mobile optimization for GIF background */
+            .video-lane:nth-child(2),
+            .video-lane:nth-child(3) {
+                display: none; /* Hide the second and third lanes */
+            }
+            .video-lane:nth-child(1) {
+                flex: 0 0 100%; /* Make the first lane take full width, prevent shrinking/growing */
+                max-width: 100%; /* Ensure it doesn't exceed 100% */
+            }
         }
         
         @media (max-width: 480px) {
