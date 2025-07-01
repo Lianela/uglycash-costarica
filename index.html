@@ -203,21 +203,10 @@
             opacity: 0.7; /* Adjust opacity for background effect */
         }
 
-        /* Keyframes for continuous seamless vertical slide up with "stay" periods and quick transitions */
+        /* Keyframes for continuous seamless vertical slide up */
         @keyframes slideUpCarousel {
-            0% { transform: translateY(0%); filter: blur(0px); } /* No additional blur at start of segment */
-            30% { transform: translateY(0%); filter: blur(0px); } /* Stay on GIF, no additional blur */
-            30.1% { filter: blur(25px); } /* Instant blur increase for transition start */
-            33% { transform: translateY(-16.666%); filter: blur(0px); } /* End slide, back to normal blur */
-            
-            63% { transform: translateY(-16.666%); filter: blur(0px); } /* Stay on GIF, no additional blur */
-            63.1% { filter: blur(25px); } /* Instant blur increase for transition start */
-            66% { transform: translateY(-33.333%); filter: blur(0px); } /* End slide, back to normal blur */
-            
-            96% { transform: translateY(-33.333%); filter: blur(0px); } /* Stay on GIF, no additional blur */
-            96.1% { filter: blur(25px); } /* Instant blur increase for transition start */
-            99% { transform: translateY(-50%); filter: blur(0px); } /* End slide, back to normal blur */
-            100% { transform: translateY(-50%); filter: blur(0px); } /* Ensure consistent end state for loop */
+            0% { transform: translateY(0%); }
+            100% { transform: translateY(-50%); } /* Scrolls through the 3 unique GIFs, then snaps back */
         }
 
         /* Overlay for better text readability on top of GIFs */
@@ -620,17 +609,35 @@
             }
             
             .card {
-                min-height: 300px; /* Further reduced min-height */
-                padding: 1.5rem;
+                min-height: 250px; /* Further reduced min-height for mobile */
+                padding: 1rem; /* Adjusted padding */
             }
             
             .stretched-text {
-                font-size: 2rem;
+                font-size: 1.8rem; /* Adjust stretched text size */
+                margin: 0 5px 0.8rem; /* Adjust margin for compactness */
+            }
+            
+            .card h3 {
+                font-size: 1.8rem; /* Keep existing for 768px breakpoint */
+                margin-bottom: 0.8rem; /* Reduce margin */
+            }
+
+            .card-content > p:first-of-type { /* Target the first paragraph in card-content */
+                font-size: 1rem; /* Adjust font size */
+                line-height: 1.4; /* Make line height tighter */
+                display: -webkit-box;
+                -webkit-line-clamp: 3; /* Limit to 3 lines */
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                margin: 0.5rem 0 1rem; /* Adjust margin for compactness */
             }
             
             .icon-grid {
                 grid-template-columns: repeat(2, 1fr); /* Always 2 columns for mobile */
-                gap: 10px; /* Slightly smaller gap */
+                gap: 8px; /* Slightly smaller gap between icons */
+                margin: 1rem auto; /* Adjusted margin */
             }
             .icon-item p {
                 display: none; /* Hide text below icons */
@@ -639,21 +646,31 @@
                 display: none;
             }
             .icon-item {
-                padding: 10px; /* Reduced padding for icon items */
+                padding: 8px; /* Reduced padding for icon items */
             }
             .icon-item i, .icon-item img {
-                font-size: 1.8rem; /* Slightly smaller icons */
-                margin-bottom: 5px; /* Reduced margin */
+                font-size: 1.6rem; /* Slightly smaller icons */
+                margin-bottom: 0; /* Remove bottom margin if text is hidden */
+            }
+
+            .card-content > p:last-of-type { /* Target the last paragraph in card-content */
+                display: none; /* Hide this paragraph */
             }
             /* Not a Bank Section Responsive */
             .not-a-bank-section {
-                padding: 80px 20px;
+                padding: 60px 15px; /* Reduced padding for mobile */
             }
             .not-a-bank-section .section-title {
-                font-size: 2.5rem;
+                font-size: 2.2rem; /* Smaller title */
             }
             .not-a-bank-section .section-subtitle {
-                font-size: 1.2rem;
+                font-size: 1.1rem; /* Smaller subtitle */
+            }
+            .not-a-bank-section p {
+                font-size: 0.95rem; /* Smaller general text */
+            }
+            .not-a-bank-section ul li {
+                font-size: 0.95rem; /* Smaller list items */
             }
 
             /* Adjust button size for mobile */
@@ -682,18 +699,20 @@
             }
             
             .card {
-                min-height: 280px; /* Even smaller min-height for very small screens */
-                padding: 0.8rem; /* Even smaller padding */
+                min-height: 220px; /* Even smaller min-height for very small screens */
+                padding: 0.5rem; /* Even smaller padding */
             }
             .card h3 {
-                font-size: 1.6rem; /* Smaller font for card titles */
+                font-size: 1.4rem; /* Smaller font for card titles */
             }
-            .card p {
-                font-size: 1rem; /* Smaller font for card paragraphs */
+            .card-content > p:first-of-type {
+                font-size: 0.9rem; /* Even smaller font for card paragraphs */
+                -webkit-line-clamp: 3; /* Keep limit to 3 lines */
+                margin: 0.4rem 0 0.8rem;
             }
             
             .stretched-text {
-                font-size: 1.7rem;
+                font-size: 1.5rem;
                 letter-spacing: 0.1em;
             }
             
@@ -704,17 +723,17 @@
                 display: none; /* Ensure text is hidden */
             }
             .icon-item i, .icon-item img {
-                font-size: 1.6rem;
+                font-size: 1.4rem;
             }
             
             .nav-btn {
-                width: 50px;
-                height: 50px;
-                font-size: 1.2rem;
+                width: 45px;
+                height: 45px;
+                font-size: 1rem;
             }
             
             .card-content {
-                padding: 0 10px;
+                padding: 0 5px;
             }
             /* Not a Bank Section Responsive */
             .not-a-bank-section {
