@@ -203,21 +203,10 @@
             opacity: 0.7; /* Adjust opacity for background effect */
         }
 
-        /* Keyframes for continuous seamless vertical slide up with "stay" periods and quick transitions */
+        /* Keyframes for continuous seamless vertical slide up */
         @keyframes slideUpCarousel {
-            0% { transform: translateY(0%); filter: blur(0px); } /* No additional blur at start of segment */
-            30% { transform: translateY(0%); filter: blur(0px); } /* Stay on GIF, no additional blur */
-            30.1% { filter: blur(25px); } /* Instant blur increase for transition start */
-            33% { transform: translateY(-16.666%); filter: blur(0px); } /* End slide, back to normal blur */
-            
-            63% { transform: translateY(-16.666%); filter: blur(0px); } /* Stay on GIF, no additional blur */
-            63.1% { filter: blur(25px); } /* Instant blur increase for transition start */
-            66% { transform: translateY(-33.333%); filter: blur(0px); } /* End slide, back to normal blur */
-            
-            96% { transform: translateY(-33.333%); filter: blur(0px); } /* Stay on GIF, no additional blur */
-            96.1% { filter: blur(25px); } /* Instant blur increase for transition start */
-            99% { transform: translateY(-50%); filter: blur(0px); } /* End slide, back to normal blur */
-            100% { transform: translateY(-50%); filter: blur(0px); } /* Ensure consistent end state for loop */
+            0% { transform: translateY(0%); }
+            100% { transform: translateY(-50%); } /* Scrolls through the 3 unique GIFs, then snaps back */
         }
 
         /* Overlay for better text readability on top of GIFs */
@@ -900,42 +889,25 @@
         <section class="hero-section">
             <!-- Background GIFs arranged in 3 lanes with vertical slide-up effect -->
             <div class="video-background">
-                <!-- Lane 1 -->
+                <!-- Single Lane for Mobile -->
                 <div class="video-lane">
                     <div class="carousel-inner">
                         <img src="https://i.postimg.cc/1RCJGzPg/Gana-el-1-sobre-el-balance-de-tus-amigos-con-el-programa-de-referidos-UGLYCASH-UGLYCASH-720p-h2.gif" alt="[Image of GIF 1]" class="bg-gif">
                         <img src="https://i.postimg.cc/MTttr6QF/Tutorial-de-c-mo-acceder-a-tu-c-digo-de-referido-UGLYCASH-UGLYCASH-720p-h264.gif" alt="[Image of GIF 2]" class="bg-gif">
                         <img src="https://i.postimg.cc/7hW9wKX1/Tutorial-de-c-mo-ganar-el-1-anual-del-balance-de-tus-amigos-UGLYCASH-UGLYCASH-720p-h264.gif" alt="[Image of GIF 3]" class="bg-gif">
+                        <img src="https://i.postimg.cc/W452NrLp/1-A-O-EN-WISE-VS-1-A-O-EN-UGLYCASH-UGLYCASH-720p-h264.gif" alt="[Image of GIF 4]" class="bg-gif">
+                        <img src="https://i.postimg.cc/Y2DwygQM/POR-QU-SIGUES-QUERIENDO-ENTRAR-EN-WISE-UGLYCASH-UGLYCASH-720p-h264.gif" alt="[Image of GIF 5]" class="bg-gif">
+                        <img src="https://i.postimg.cc/htTWj56t/3-MOMENTOS-EN-LOS-QUE-NECESITAS-UGLYCASH-Y-NO-PAYONEER-UGLYCASH-720p-h264.gif" alt="[Image of GIF 6]" class="bg-gif">
+                        <img src="https://i.postimg.cc/kgvCsHch/C-MO-PUEDES-MANEJAR-TU-DINERO-EN-PAYPAL-UGLYCASH-UGLYCASH-720p-h264.gif" alt="[Image of GIF 7]" class="bg-gif">
+                        <img src="https://i.postimg.cc/g0MWF61V/PAYPAL-VS-UGLY-CASH-RENDIMIENTOS-UGLYCASH-720p-h264.gif" alt="[Image of GIF 8]" class="bg-gif">
+                        <img src="https://i.postimg.cc/sgsdMcrP/POR-QU-UGLYCASH-ES-LA-MEJOR-MANERA-DE-SACAR-LOS-BALANCES-QUE-TIENES-EN-PAYPAL-UGLYCASH-720p-h2.gif" alt="[Image of GIF 9]" class="bg-gif">
                         <!-- Duplicates for seamless loop -->
                         <img src="https://i.postimg.cc/1RCJGzPg/Gana-el-1-sobre-el-balance-de-tus-amigos-con-el-programa-de-referidos-UGLYCASH-UGLYCASH-720p-h2.gif" alt="[Image of GIF 1 Duplicate]" class="bg-gif">
                         <img src="https://i.postimg.cc/MTttr6QF/Tutorial-de-c-mo-acceder-a-tu-c-digo-de-referido-UGLYCASH-UGLYCASH-720p-h264.gif" alt="[Image of GIF 2 Duplicate]" class="bg-gif">
                         <img src="https://i.postimg.cc/7hW9wKX1/Tutorial-de-c-mo-ganar-el-1-anual-del-balance-de-tus-amigos-UGLYCASH-UGLYCASH-720p-h264.gif" alt="[Image of GIF 3 Duplicate]" class="bg-gif">
                     </div>
                 </div>
-                <!-- Lane 2 -->
-                <div class="video-lane">
-                    <div class="carousel-inner">
-                        <img src="https://i.postimg.cc/W452NrLp/1-A-O-EN-WISE-VS-1-A-O-EN-UGLYCASH-UGLYCASH-720p-h264.gif" alt="[Image of GIF 4]" class="bg-gif">
-                        <img src="https://i.postimg.cc/Y2DwygQM/POR-QU-SIGUES-QUERIENDO-ENTRAR-EN-WISE-UGLYCASH-UGLYCASH-720p-h264.gif" alt="[Image of GIF 5]" class="bg-gif">
-                        <img src="https://i.postimg.cc/htTWj56t/3-MOMENTOS-EN-LOS-QUE-NECESITAS-UGLYCASH-Y-NO-PAYONEER-UGLYCASH-720p-h264.gif" alt="[Image of GIF 6]" class="bg-gif">
-                        <!-- Duplicates for seamless loop -->
-                        <img src="https://i.postimg.cc/W452NrLp/1-A-O-EN-WISE-VS-1-A-O-EN-UGLYCASH-UGLYCASH-720p-h264.gif" alt="[Image of GIF 4 Duplicate]" class="bg-gif">
-                        <img src="https://i.postimg.cc/Y2DwygQM/POR-QU-SIGUES-QUERIENDO-ENTRAR-EN-WISE-UGLYCASH-UGLYCASH-720p-h264.gif" alt="[Image of GIF 5 Duplicate]" class="bg-gif">
-                        <img src="https://i.postimg.cc/htTWj56t/3-MOMENTOS-EN-LOS-QUE-NECESITAS-UGLYCASH-Y-NO-PAYONEER-UGLYCASH-720p-h264.gif" alt="[Image of GIF 6 Duplicate]" class="bg-gif">
-                    </div>
-                </div>
-                <!-- Lane 3 -->
-                <div class="video-lane">
-                    <div class="carousel-inner">
-                        <img src="https://i.postimg.cc/kgvCsHch/C-MO-PUEDES-MANEJAR-TU-DINERO-EN-PAYPAL-UGLYCASH-UGLYCASH-720p-h264.gif" alt="[Image of GIF 7]" class="bg-gif">
-                        <img src="https://i.postimg.cc/g0MWF61V/PAYPAL-VS-UGLY-CASH-RENDIMIENTOS-UGLYCASH-720p-h264.gif" alt="[Image of GIF 8]" class="bg-gif">
-                        <img src="https://i.postimg.cc/sgsdMcrP/POR-QU-UGLYCASH-ES-LA-MEJOR-MANERA-DE-SACAR-LOS-BALANCES-QUE-TIENES-EN-PAYPAL-UGLYCASH-720p-h2.gif" alt="[Image of GIF 9]" class="bg-gif">
-                        <!-- Duplicates for seamless loop -->
-                        <img src="https://i.postimg.cc/kgvCsHch/C-MO-PUEDES-MANEJAR-TU-DINERO-EN-PAYPAL-UGLYCASH-UGLYCASH-720p-h264.gif" alt="[Image of GIF 7 Duplicate]" class="bg-gif">
-                        <img src="https://i.postimg.cc/g0MWF61V/PAYPAL-VS-UGLY-CASH-RENDIMIENTOS-UGLYCASH-720p-h264.gif" alt="[Image of GIF 8 Duplicate]" class="bg-gif">
-                        <img src="https://i.postimg.cc/sgsdMcrP/POR-QU-UGLYCASH-ES-LA-MEJOR-MANERA-DE-SACAR-LOS-BALANCES-QUE-TIENES-EN-PAYPAL-UGLYCASH-720p-h2.gif" alt="[Image of GIF 9 Duplicate]" class="bg-gif">
-                    </div>
-                </div>
+                <!-- Removed Lane 2 and Lane 3 for mobile optimization -->
             </div>
 
             <div class="hero-content">
