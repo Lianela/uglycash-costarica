@@ -613,7 +613,7 @@
             }
             
             .card {
-                min-height: 320px; /* Increased from 300px for more space */
+                min-height: 350px; /* Increased min-height for more space */
                 padding: 0.8rem; /* Adjusted padding */
             }
             
@@ -629,11 +629,11 @@
 
             /* Main paragraph in card-content */
             .card-content > p:first-of-type { 
-                font-size: 0.95rem; /* Slightly smaller font */
-                line-height: 1.3; /* Tighter line height */
+                font-size: 0.9rem; /* Slightly smaller for more wrapping */
+                line-height: 1.35;
                 white-space: normal; /* Ensure text wraps */
                 word-break: break-word; /* Break long words if necessary */
-                margin: 0.3rem 0 0.8rem; /* Adjusted margin */
+                margin: 0.2rem 0 0.6rem; /* Reduced margins */
             }
             
             .icon-grid {
@@ -706,7 +706,7 @@
                 padding: 20px 15px 0 !important; /* Adjust padding for mobile */
             }
             .card-container {
-                padding: 0 5px; /* Reduced padding for better centering */
+                padding: 0 15px; /* Consistent padding for mobile */
             }
         }
         
@@ -724,8 +724,8 @@
             }
             
             .card {
-                min-height: 280px; /* Increased from 250px */
-                padding: 0.5rem; /* Even smaller padding */
+                min-height: 300px; /* Increased from 280px for more space on very small screens */
+                padding: 0.8rem; /* Consistent padding with 768px */
             }
             .card h3 {
                 font-size: 1.4rem; /* Smaller font for card titles */
@@ -776,7 +776,7 @@
                 font-size: 1rem;
             }
             .card-container {
-                padding: 0; /* Removed all padding for full width */
+                padding: 0 10px; /* Added 10px padding for very small screens */
             }
         }
         
@@ -1385,17 +1385,20 @@
             function setCardWidthAndMoveCarousel(index) {
                 currentIndex = index;
                 
-                const containerWidth = cardContainer.clientWidth; 
+                const containerWidth = cardContainer.clientWidth; // This includes padding
+                const computedStyle = getComputedStyle(cardContainer);
+                const containerPaddingLeft = parseFloat(computedStyle.paddingLeft);
+                const containerPaddingRight = parseFloat(computedStyle.paddingRight);
+                
+                // Calculate the effective width for a single card, considering container padding
+                const cardEffectiveWidth = containerWidth - (containerPaddingLeft + containerPaddingRight); 
                 
                 cards.forEach(card => {
-                    // Set card width to fill the container, ensuring it's centered
-                    card.style.width = `${containerWidth}px`;
+                    card.style.width = `${cardEffectiveWidth}px`;
                 });
 
-                // Calculate the position: (current index * (card width + gap))
-                // The gap is applied between cards, so when moving to the next card,
-                // we move the full card width PLUS the gap to bring the next card into view.
-                const position = -currentIndex * (containerWidth + gapValue);
+                // The position needs to account for the effective width and gap
+                const position = -currentIndex * (cardEffectiveWidth + gapValue);
                 cardsWrapper.style.transform = `translateX(${position}px)`;
                 
                 // Update indicators
