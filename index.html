@@ -642,20 +642,6 @@
                 font-size: 1.2rem;
             }
 
-            /* Mobile optimization for GIF background */
-            .video-background {
-                flex-direction: column; /* Ensure vertical layout even if only one is visible */
-            }
-            .video-lane:nth-child(2),
-            .video-lane:nth-child(3) {
-                display: none; /* Hide the second and third lanes */
-            }
-            .video-lane:nth-child(1) {
-                flex: none; /* Remove flex properties */
-                width: 100%; /* Make the first lane take full width */
-                max-width: 100%; /* Ensure it doesn't exceed 100% */
-            }
-
             /* Adjust button size for mobile */
             .btn {
                 font-size: 0.8rem; /* Further smaller font size for the button */
@@ -691,7 +677,7 @@
             }
             
             .icon-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr); /* Changed from 1fr to 2fr for better mobile layout */
             }
             
             .nav-btn {
