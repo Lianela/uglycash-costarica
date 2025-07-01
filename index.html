@@ -597,12 +597,26 @@
                 display: none;
             }
 
+            /* Adjust hero section content position for mobile */
+            .hero-section {
+                padding-top: 120px; /* Increased padding-top to push content down from header */
+                align-items: flex-start; /* Align content to the top */
+                justify-content: center; /* Center horizontally */
+            }
+
+            .hero-content {
+                margin-top: 0; /* Remove any top margin to allow it to go higher */
+                padding-top: 0; /* Remove any padding-top */
+            }
+
             .hero-title {
                 font-size: 2.8rem;
+                margin-bottom: 10px; /* Reduced margin */
             }
             
             .hero-subtitle {
                 font-size: 1.3rem;
+                margin-bottom: 15px; /* Reduced margin */
             }
             
             .section-title {
@@ -765,6 +779,15 @@
                 line-height: 1.2;
                 margin: 0;
                 white-space: nowrap;
+            }
+
+            /* Card Navigation for mobile */
+            .card-nav {
+                margin-top: 5px; /* Moved closer to cards */
+            }
+            
+            .card-indicators {
+                margin-top: 5px; /* Moved closer to buttons */
             }
         }
         
