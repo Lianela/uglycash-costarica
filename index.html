@@ -641,18 +641,8 @@
                 gap: 8px; /* Slightly smaller gap between icons */
                 margin: 1rem auto; /* Adjusted margin */
             }
-            /* Show text below icons */
-            .icon-item p {
-                display: block; /* Make text visible */
-                font-size: 0.8rem; /* Smaller font for icon text */
-                line-height: 1.2;
-                margin-top: 5px; /* Add a small margin above text */
-                white-space: normal; /* Ensure icon text wraps */
-                word-break: break-word; /* Break long words if necessary */
-            }
-            .icon-item:nth-child(n+3) { /* Hide icons from the 3rd one onwards */
-                display: none;
-            }
+            /* Removed this rule to show all icons on mobile for card-2 */
+            /* .icon-item:nth-child(n+3) { display: none; } */ 
             .icon-item {
                 padding: 8px; /* Reduced padding for icon items */
             }
@@ -736,7 +726,7 @@
                 padding-bottom: 8px;
                 margin: 0 auto; /* Added auto for horizontal centering */
                 width: 100%;
-                justify-content: flex-start;
+                justify-content: center; /* Changed from flex-start to center */
             }
 
             .card-2 .icon-item {
