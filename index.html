@@ -629,7 +629,7 @@
             }
             
             .icon-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: repeat(2, 1fr); /* Always 2 columns for mobile */
             }
             /* Not a Bank Section Responsive */
             .not-a-bank-section {
@@ -667,8 +667,15 @@
                 font-size: 1.8rem;
             }
             
+            .card {
+                min-height: 350px; /* Reduced min-height for smaller screens */
+                padding: 1rem; /* Reduced padding for smaller screens */
+            }
             .card h3 {
-                font-size: 1.8rem;
+                font-size: 1.6rem; /* Smaller font for card titles */
+            }
+            .card p {
+                font-size: 1rem; /* Smaller font for card paragraphs */
             }
             
             .stretched-text {
@@ -677,7 +684,10 @@
             }
             
             .icon-grid {
-                grid-template-columns: repeat(2, 1fr); /* Changed from 1fr to 2fr for better mobile layout */
+                grid-template-columns: repeat(2, 1fr); /* Stays at 2 columns */
+            }
+            .icon-item p {
+                font-size: 0.85rem; /* Smaller font for icon item text */
             }
             
             .nav-btn {
