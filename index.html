@@ -643,12 +643,16 @@
             }
 
             /* Mobile optimization for GIF background */
+            .video-background {
+                flex-direction: column; /* Ensure vertical layout even if only one is visible */
+            }
             .video-lane:nth-child(2),
             .video-lane:nth-child(3) {
                 display: none; /* Hide the second and third lanes */
             }
             .video-lane:nth-child(1) {
-                flex: 0 0 100%; /* Make the first lane take full width, prevent shrinking/growing */
+                flex: none; /* Remove flex properties */
+                width: 100%; /* Make the first lane take full width */
                 max-width: 100%; /* Ensure it doesn't exceed 100% */
             }
         }
